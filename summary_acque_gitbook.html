@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+
+<html lang="it">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
+<title>Summary by numbers — Acque reflue, depurazione e riuso</title>
+<style>
+:root{
+  --paper:#efefef;
+  --ink:#3d4b59;
+  --blue:#4a95d3;
+  --blue2:#74b2df;
+  --blue3:#5f91b7;
+  --bluePanel:#4f97d5;
+  --orange:#dc6430;
+  --orange2:#e47748;
+  --line:#d8d8d8;
+  --white:#fff;
+  --radius:22px;
+  --shadow:0 18px 42px rgba(0,0,0,.08);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:transparent;color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+button{font:inherit}
+svg{display:block;width:100%;height:auto}
+.shell{width:min(1480px,100%);margin:auto;border:1px solid rgba(0,0,0,.05);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+.layout{display:grid;grid-template-columns:minmax(0,1.95fr) minmax(360px,.95fr)}
+.left{background:var(--paper);padding:34px 34px 22px}.right{background:var(--bluePanel);color:#fff;padding:28px 34px 22px;display:flex;flex-direction:column}
+.toprow{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.headline{margin:0;color:var(--blue);font-size:22px;font-weight:900;letter-spacing:.03em;text-transform:uppercase}
+.subhead{margin:38px 0 4px;color:var(--blue);font-size:16px;font-weight:900;text-transform:uppercase;line-height:1.15}
+.subsub{margin:0;color:var(--blue);font-size:14px;font-weight:700;line-height:1.2}.unit{margin-top:4px;color:var(--blue);font-size:14px}
+.replay{border:1px solid rgba(0,0,0,.08);background:#fff;color:var(--ink);padding:8px 12px;border-radius:999px;font-weight:800;cursor:pointer;transition:.18s}.replay:hover{transform:translateY(-1px)}
+.legend-scale{display:flex;gap:18px;flex-wrap:wrap;margin:22px 0 18px}.legend-scale .item{display:grid;justify-items:center;gap:6px;text-align:center;color:var(--blue);font-size:13px;line-height:1.05}.legend-scale .sw{width:18px;height:18px}.sw1{background:#5a9ad6}.sw2{background:#6d8fa9}.sw3{background:#6e7480}.sw4{background:#ab6a54}.sw5{background:#dc6430}
+.main-flow{position:relative;height:420px;margin-top:6px}
+.flow-svg{position:absolute;inset:0;width:100%;height:100%}
+.main-flow .label{position:absolute;font-weight:700;line-height:1.15}
+.main-flow .orange-label{color:var(--orange)}.main-flow .blue-label{color:var(--blue)}
+.badge{display:inline-block;background:#fff;padding:3px 6px;font-weight:900;font-size:14px;line-height:1;color:inherit}
+.label.small{font-size:12px}.label.med{font-size:15px}.label.big{font-size:18px}
+.plant-tag{position:absolute;right:208px;top:176px;background:var(--orange);color:#fff;font-weight:900;font-size:14px;line-height:1.05;padding:8px 12px;z-index:3}
+.bottom-wave{margin-top:18px}
+.wave-title{margin:0 0 2px;color:var(--blue);font-size:18px;font-weight:900;text-transform:uppercase}.wave-unit{margin:0 0 10px;color:var(--blue);font-size:14px}
+#codWave text.year{fill:#5b5b5b;font-size:12px} #codWave text.value{fill:#fff;font-size:14px;font-weight:900}
+.right h2{margin:0;font-size:18px;font-weight:900;line-height:1.05;text-transform:uppercase}.source{margin-top:4px;font-size:14px;font-weight:700}.panel-block{margin-top:48px}.panel-block:first-of-type{margin-top:56px}.panel-title{font-size:18px;font-weight:900;line-height:1.1;text-transform:uppercase}.panel-unit{margin-top:8px;font-size:16px}.taps{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:18px}.tap-item{text-align:center}.tap-label{display:inline-block;background:#fff;color:var(--bluePanel);padding:2px 6px;font-size:13px;font-weight:900;line-height:1}.tap-name{display:inline-block;margin-top:4px;background:#fff;color:var(--bluePanel);padding:2px 8px;font-size:13px;font-weight:900;line-height:1.05}.tap-svg{width:94px;height:168px;margin:0 auto 8px;color:#fff}.tap-svg .drop{opacity:0;transform:translateY(-6px);animation:dropIn .32s ease forwards}
+.consumi{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;align-items:end;margin-top:20px}.cons-item{text-align:center}.cons-svg{width:120px;height:240px;margin:0 auto;color:#fff}.cons-val{display:inline-block;background:#fff;color:var(--bluePanel);padding:3px 8px;font-size:13px;font-weight:900;line-height:1}.cons-name{margin-top:6px;font-size:16px;font-weight:900;line-height:1.05}.cons-sub{font-size:16px;font-weight:900;line-height:1.05}
+.footer-note{padding:12px 16px;background:rgba(255,255,255,.42);font-size:11px;color:#5d5d5d;text-align:center}
+.tooltip{position:fixed;z-index:99;pointer-events:none;max-width:270px;padding:9px 11px;border-radius:10px;background:#24333a;color:#fff;font-size:12px;line-height:1.35;box-shadow:0 8px 24px rgba(0,0,0,.18);opacity:0;transform:translateY(5px);transition:.12s}.hoverable{cursor:help}
+.counter{font-variant-numeric:tabular-nums}
+@keyframes draw{to{stroke-dashoffset:0}}@keyframes fadeUp{to{opacity:1;transform:none}}@keyframes dropIn{to{opacity:1;transform:none}}
+@media(max-width:1180px){.layout{grid-template-columns:1fr}.shell{border-radius:16px}.right{padding:22px 20px}.left{padding:22px 20px}}
+@media(max-width:760px){.headline{font-size:18px}.subhead{font-size:15px;margin-top:22px}.main-flow{height:360px}.plant-tag{right:120px;top:160px;font-size:12px}.taps{grid-template-columns:repeat(2,1fr)}.consumi{grid-template-columns:1fr}.panel-block{margin-top:34px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}}
+</style>
+<style>
+/* --- Shared interactive controls: GitBook edition --- */
+:root{--ui-control-bg:rgba(255,255,255,.94);--ui-control-ink:#25332c;--ui-control-line:rgba(25,45,35,.14);--ui-focus:rgba(62,143,99,.28)}
+.viz-toolbar{position:absolute;top:14px;right:14px;z-index:1000;display:flex;gap:7px;align-items:center;padding:6px;border:1px solid var(--ui-control-line);border-radius:999px;background:rgba(255,255,255,.78);box-shadow:0 8px 28px rgba(20,35,28,.12);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.viz-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:36px;border:1px solid var(--ui-control-line);border-radius:999px;padding:7px 11px;background:var(--ui-control-bg);color:var(--ui-control-ink);font:800 12px/1.1 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;cursor:pointer;transition:transform .16s ease,box-shadow .16s ease,background .16s ease;white-space:nowrap}
+.viz-btn:hover{transform:translateY(-1px);box-shadow:0 5px 14px rgba(30,50,40,.12);background:#fff}.viz-btn:focus-visible{outline:3px solid var(--ui-focus);outline-offset:2px}.viz-btn svg{width:16px;height:16px;flex:none}
+.viz-modal[hidden]{display:none}.viz-modal{position:fixed;inset:0;z-index:5000;display:grid;place-items:center;padding:20px;background:rgba(15,25,20,.45);backdrop-filter:blur(5px)}
+.viz-dialog{width:min(560px,100%);max-height:min(78vh,680px);overflow:auto;border-radius:20px;background:#fff;color:#26352d;box-shadow:0 24px 80px rgba(0,0,0,.28);padding:24px;position:relative}
+.viz-dialog h2{margin:0 42px 10px 0!important;color:#26352d!important;font-size:20px!important;text-transform:none!important}.viz-dialog p{margin:8px 0!important;color:#58675f!important;font-size:14px!important;line-height:1.5!important}.viz-dialog ul{margin:12px 0 0;padding-left:20px;color:#435149;font-size:14px;line-height:1.5}.viz-close{position:absolute;top:14px;right:14px;width:34px;height:34px;border:1px solid #dfe7e2;border-radius:50%;background:#fff;color:#26352d;font-size:20px;cursor:pointer}
+.viz-paused *, .viz-paused *::before,.viz-paused *::after{animation-play-state:paused!important}
+.viz-fullscreen{width:100vw!important;max-width:none!important;height:100vh!important;overflow:auto!important;border-radius:0!important;margin:0!important}
+.viz-fullscreen .viz-toolbar{position:fixed}
+body{position:relative}.shell,.embed-shell,main{position:relative}
+@media(max-width:760px){.viz-toolbar{position:sticky;top:8px;right:auto;margin:8px 8px 0 auto;width:max-content;max-width:calc(100% - 16px);overflow-x:auto}.viz-btn .viz-label{display:none}.viz-btn{padding:8px;min-width:36px}.viz-dialog{padding:20px}}
+@media print{.viz-toolbar,.viz-modal{display:none!important}.shell,.embed-shell{box-shadow:none!important;border:0!important}}
+</style></head>
+<body>
+<main class="shell" id="visual">
+<nav aria-label="Comandi della visualizzazione" class="viz-toolbar">
+<button class="viz-btn" data-viz-action="replay" title="Rivedi le animazioni" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8 M3 3v5h5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span class="viz-label">Rivedi</span></button>
+<button aria-pressed="false" class="viz-btn" data-viz-action="pause" title="Metti in pausa le animazioni" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M8 5v14 M16 5v14" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span class="viz-label">Pausa</span></button>
+<button class="viz-btn" data-viz-action="fullscreen" title="Apri a schermo intero" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M8 3H3v5 M16 3h5v5 M8 21H3v-5 M16 21h5v-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span class="viz-label">Espandi</span></button>
+<button class="viz-btn" data-viz-action="print" title="Stampa o salva in PDF" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M6 9V3h12v6 M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2 M6 14h12v7H6z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span class="viz-label">Stampa</span></button>
+<button class="viz-btn" data-viz-action="info" title="Informazioni e istruzioni" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M12 17v-6 M12 7h.01 M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span class="viz-label">Info</span></button>
+</nav>
+
+<div class="layout">
+<section class="left">
+<div class="toprow">
+<div><h1 class="headline">SUMMARY BY NUMBERS</h1></div>
+
+</div>
+<div class="subhead">ACQUE REFLUE - DEPURAZIONE E RIUSO ACQUE IMPIANTO MANCASALE 2025</div>
+<p class="subsub">COD: indice che misura il grado di inquinamento dell'acqua</p>
+<p class="unit">(mg/l)</p>
+<div class="legend-scale">
+<div class="item"><span class="sw sw1"></span><span>0-30<br/>molto basso</span></div>
+<div class="item"><span class="sw sw2"></span><span>31-50<br/>basso</span></div>
+<div class="item"><span class="sw sw3"></span><span>51-90<br/>moderato</span></div>
+<div class="item"><span class="sw sw4"></span><span>91-120<br/>alto</span></div>
+<div class="item"><span class="sw sw5"></span><span>&gt;120<br/>molto alto</span></div>
+</div>
+<div class="main-flow hoverable" data-tip="L'acqua in ingresso al depuratore presenta un COD pari a 222 mg/l. Una quota viene re-impiegata per uso irriguo e l'acqua in uscita ha COD pari a 19 mg/l.">
+<svg aria-label="Flusso di depurazione e riuso dell'acqua" class="flow-svg" role="img" viewbox="0 0 860 420">
+<defs>
+<lineargradient id="bluePipe" x1="0" x2="1">
+<stop offset="0%" stop-color="#d9e2ea"></stop>
+<stop offset="45%" stop-color="#6eafdf"></stop>
+<stop offset="100%" stop-color="#4a95d3"></stop>
+</lineargradient>
+<lineargradient id="plantGrad" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#e47748"></stop>
+<stop offset="100%" stop-color="#5a95c7"></stop>
+</lineargradient>
+</defs>
+<!-- top orange pipe -->
+<path d="M10 52 H610 C705 52 780 125 780 220" fill="none" stroke="#dc6430" stroke-linecap="butt" stroke-width="96"></path>
+<!-- top arrow inside -->
+<path d="M124 74 H632 C705 74 750 128 751 177" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"></path>
+<path d="M744 170 l8 12 l-12 -5" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"></path>
+<!-- lower blue pipe -->
+<path d="M782 220 C782 316 706 360 618 360 H10" fill="none" stroke="url(#bluePipe)" stroke-linecap="butt" stroke-width="72"></path>
+<!-- lower loop / re-use ring -->
+<path d="M566 251 C541 301 498 320 443 320 H378 C318 320 272 278 272 220 C272 162 318 120 378 120 C438 120 486 158 486 220" fill="none" stroke="#4a95d3" stroke-linecap="round" stroke-width="32"></path>
+<!-- inner loop arrows -->
+<path d="M432 220 a58 58 0 1 1 -66 41" fill="none" stroke="#4a95d3" stroke-linecap="round" stroke-width="2"></path>
+<path d="M379 174 l10 2 l-3 10" fill="none" stroke="#4a95d3" stroke-width="2"></path>
+<path d="M431 211 l6 9 l8 -7" fill="none" stroke="#4a95d3" stroke-width="2"></path>
+<path d="M388 267 l-10 -3 l3 -9" fill="none" stroke="#4a95d3" stroke-width="2"></path>
+<!-- sprout -->
+<path d="M405 241c0-18 6-28 6-40" fill="none" stroke="#4a95d3" stroke-linecap="round" stroke-width="2.4"></path>
+<path d="M405 216c-10-12-23-10-27-1 11 13 21 11 27 1z" fill="none" stroke="#4a95d3" stroke-width="2"></path>
+<path d="M413 211c4-14 16-18 26-14-2 15-14 23-26 14z" fill="none" stroke="#4a95d3" stroke-width="2"></path>
+<text fill="#4a95d3" font-size="28" font-weight="900" x="232" y="226">35%</text>
+<text fill="#4a95d3" font-size="16" font-weight="700" x="460" y="246">Acqua</text>
+<text fill="#4a95d3" font-size="16" font-weight="700" x="460" y="266">re-impiegata</text>
+<text fill="#4a95d3" font-size="16" font-weight="700" x="460" y="286">per uso irriguo</text>
+<!-- plant circle -->
+<circle cx="780" cy="220" fill="url(#plantGrad)" r="70" stroke="#fff" stroke-width="4"></circle>
+<g fill="none" stroke="#fff" stroke-width="4">
+<circle cx="764" cy="205" r="11"></circle><circle cx="798" cy="205" r="11"></circle>
+<circle cx="764" cy="233" r="11"></circle><circle cx="798" cy="233" r="11"></circle>
+<circle cx="764" cy="261" r="11"></circle><circle cx="798" cy="261" r="11"></circle>
+<path d="M775 205h12M775 233h12M775 261h12M764 216v6M798 216v6M764 244v6M798 244v6"></path>
+</g>
+<!-- lower white arrow -->
+<path d="M712 286 C682 328 631 338 506 338" fill="none" stroke="#fff" stroke-width="2.3"></path>
+<path d="M517 330 l-9 8 l9 7" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.3"></path>
+</svg>
+<div class="label med orange-label" style="left:0;top:264px;">Acqua in entrata al depuratore</div>
+<div class="label big orange-label" style="left:28px;top:208px;"><span class="badge">222 mg/l</span></div>
+<div class="plant-tag">Depuratore<br/>di Mancasale</div>
+<div class="label med blue-label" style="left:0;top:392px;">Acqua in uscita dal depuratore</div>
+<div class="label big blue-label" style="left:436px;top:424px;transform:translateY(-100%);"><span class="badge">19 mg/l</span></div>
+<div class="label big blue-label" style="left:250px;top:442px;transform:translateY(-100%);color:#fff;font-weight:900;">65%</div>
+</div>
+<div class="bottom-wave">
+<h3 class="wave-title">COD IN USCITA DAL DEPURATORE DI MANCASALE</h3>
+<p class="wave-unit">(mg/l)</p>
+<svg aria-label="COD in uscita dal depuratore di Mancasale" id="codWave" role="img" viewbox="0 0 860 170"></svg>
+</div>
+</section>
+<aside class="right">
+<div>
+<h2>CONFRONTO 2024</h2>
+<div class="source">fonte EU (Ecosistema Urbano)</div>
+</div>
+<div class="panel-block">
+<div class="panel-title">ACQUE POTABILI - PERDITE NETTE DELLA RETE ACQUEDOTTISTICA</div>
+<div class="panel-unit">%</div>
+<div class="taps" id="losses"></div>
+</div>
+<div class="panel-block">
+<div class="panel-title">ACQUE POTABILI - CONSUMO IDRICO PRO CAPITE USO DOMESTICO</div>
+<div class="panel-unit">l/ab/giorno</div>
+<div class="consumi" id="consumi"></div>
+</div>
+</aside>
+</div>
+<div class="footer-note">Versione HTML animata e responsive, pronta per integrazione in GitBook.</div>
+</main>
+<div aria-live="polite" class="tooltip" id="tooltip" role="status"></div>
+<script>
+const waveYears=[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025];
+const waveVals=[30,21.3,23.8,25,14.8,21.1,23.3,16.4,15.8,12.7,18.9];
+const lossData=[
+  {name:'Reggio Emilia', val:25.7, rows:6},
+  {name:'Modena', val:40.5, rows:10},
+  {name:'Parma', val:37.8, rows:9},
+  {name:'Media città capoluogo di provincia', val:36.1, rows:9}
+];
+const consData=[
+  {name:'Media EU', sub:'città capoluogo provincia', val:'147', fill:.42, flow:5, icon:'tap'},
+  {name:'Reggio Emilia', sub:'', val:'125', fill:.18, flow:4, icon:'faucet'},
+  {name:'Media EU', sub:'italiana', val:'220/240', fill:.78, flow:8, icon:'tap'}
+];
+const fmt1=n=>new Intl.NumberFormat('it-IT',{minimumFractionDigits:1,maximumFractionDigits:1}).format(n);
+
+function buildWave(){
+  const svg=document.getElementById('codWave'); const NS='http://www.w3.org/2000/svg';
+  const W=860,H=170, topY=28, baseY=86, amp=32; const step=78; const x0=30;
+  let d=`M ${x0} ${topY} `;
+  for(let i=0;i<waveVals.length;i++){
+    const x=x0+i*step;
+    const cx=x+step/2;
+    const end=x+step;
+    if(i<waveVals.length-1){ d+=`Q ${cx} ${topY} ${end} ${baseY} `; d+=`Q ${cx+step/2} ${baseY+amp} ${end+step} ${baseY} `; i++; }
+  }
+  // simpler build as scallops using arcs
+  d=`M 0 ${topY}`;
+  for(let i=0;i<waveVals.length;i++){
+    const x=i*78;
+    d+=` Q ${x+39} ${topY} ${x+78} ${baseY} `;
+  }
+  d+=`L ${78*waveVals.length} ${138}`;
+  for(let i=waveVals.length-1;i>=0;i--){
+    const x=i*78;
+    d+=` Q ${x+39} ${138+amp} ${x} ${baseY} `;
+  }
+  d+='Z';
+  const path=document.createElementNS(NS,'path'); path.setAttribute('d',d); path.setAttribute('fill','url(#waveGrad)'); svg.appendChild(path);
+  const defs=document.createElementNS(NS,'defs'); defs.innerHTML=`<linearGradient id="waveGrad" x1="0" x2="1"><stop offset="0%" stop-color="#4a95d3"/><stop offset="42%" stop-color="#73b2df"/><stop offset="60%" stop-color="#4a95d3"/><stop offset="84%" stop-color="#7db5de"/><stop offset="100%" stop-color="#4a95d3"/></linearGradient>`; svg.prepend(defs);
+  waveVals.forEach((v,i)=>{
+    const x=39+i*78;
+    const text=document.createElementNS(NS,'text'); text.setAttribute('x',x); text.setAttribute('y',104); text.setAttribute('text-anchor','middle'); text.setAttribute('class','value'); text.textContent=String(v).replace('.',','); svg.appendChild(text);
+    const tick=document.createElementNS(NS,'line'); tick.setAttribute('x1',x); tick.setAttribute('x2',x); tick.setAttribute('y1',144); tick.setAttribute('y2',156); tick.setAttribute('stroke','#6c6c6c'); tick.setAttribute('stroke-width','2'); svg.appendChild(tick);
+    const yr=document.createElementNS(NS,'text'); yr.setAttribute('x',x); yr.setAttribute('y',168); yr.setAttribute('text-anchor','middle'); yr.setAttribute('class','year'); yr.textContent=waveYears[i]; svg.appendChild(yr);
+  });
+}
+
+function makeTap(item, idx){
+  const container=document.createElement('div'); container.className='tap-item hoverable'; container.dataset.tip=`${item.name}: ${fmt1(item.val)}%`;
+  const svg=document.createElementNS('http://www.w3.org/2000/svg','svg'); svg.setAttribute('viewBox','0 0 94 168'); svg.setAttribute('class','tap-svg');
+  let drops='';
+  const cols=[28,44,60];
+  let count=item.rows*3 - (item.rows>6?1:0);
+  for(let r=0;r<item.rows;r++){
+    for(let c=0;c<2;c++){
+      const x=38 + c*14, y=56 + r*18;
+      drops += `<path class="drop" style="animation-delay:${0.3+idx*0.1+r*0.04+c*0.02}s" d="M${x} ${y}c0 4-3 7-6 7s-6-3-6-7c0-3 4-8 6-12 2 4 6 9 6 12Z" fill="currentColor"/>`;
+    }
+    if(r===item.rows-1 && item.rows<10){ drops += `<path class="drop" style="animation-delay:${0.4+idx*0.1+r*0.04}s" d="M50 ${56 + r*18}c0 4-3 7-6 7s-6-3-6-7c0-3 4-8 6-12 2 4 6 9 6 12Z" fill="currentColor"/>`; }
+  }
+  svg.innerHTML=`
+    <g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6 12v18c0 8 6 14 14 14h18"/>
+      <path d="M30 12v14h32v-14"/>
+      <path d="M62 12v18c0 8-6 14-14 14H30"/>
+      <path d="M36 22v34"/>
+      <path d="M41 36h22"/>
+    </g>
+    ${drops}`;
+  container.appendChild(svg);
+  const val=document.createElement('div'); val.className='tap-label'; val.textContent=fmt1(item.val); container.appendChild(val);
+  const name=document.createElement('div'); name.className='tap-name'; name.innerHTML=item.name.replace(' di provincia','<br>di provincia').replace('Media città capoluogo','Media città<br>capoluogo'); container.appendChild(name);
+  return container;
+}
+
+function buildLosses(){ const wrap=document.getElementById('losses'); lossData.forEach((d,i)=>wrap.appendChild(makeTap(d,i))); }
+
+function makeCons(item, idx){
+  const div=document.createElement('div'); div.className='cons-item hoverable'; div.dataset.tip=`${item.name}${item.sub?' '+item.sub:''}: ${item.val} l/ab/giorno`;
+  const svg=document.createElementNS('http://www.w3.org/2000/svg','svg'); svg.setAttribute('viewBox','0 0 120 240'); svg.setAttribute('class','cons-svg');
+  const waveCount=item.flow;
+  let waves='';
+  for(let i=0;i<waveCount;i++){
+    const x=42+i*8 - (waveCount>5?10:0);
+    waves += `<path d="M${x} 60 c4 5 4 10 0 15 c-4 5 -4 10 0 15 c4 5 4 10 0 15 c-4 5 -4 10 0 15 c4 5 4 10 0 15 c-4 5 -4 10 0 15" fill="none" stroke="currentColor" stroke-width="2" opacity="${0.95 - i*0.05}"/>`;
+  }
+  const glassH=62, glassY=170, fillH=glassH*item.fill;
+  const tap = item.icon==='faucet'
+    ? `<g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M58 22v22"/><path d="M70 12v32"/><path d="M44 40h40"/></g>`
+    : `<g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M24 20h36"/><path d="M36 12h12"/><path d="M58 20h16c8 0 14 6 14 14v18"/><path d="M16 34h58"/><path d="M88 52H54"/><path d="M54 52v-18"/></g>`;
+  svg.innerHTML=`${tap}${waves}<path d="M30 ${glassY} h30 l-3 50 h-24 z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M34 ${glassY + glassH - fillH} h22 l-1.8 ${fillH} h-18.4 z" fill="rgba(255,255,255,.88)" stroke="none"/>`;
+  div.appendChild(svg);
+  const val=document.createElement('div'); val.className='cons-val'; val.textContent=item.val; div.appendChild(val);
+  const name=document.createElement('div'); name.className='cons-name'; name.textContent=item.name; div.appendChild(name);
+  if(item.sub){ const sub=document.createElement('div'); sub.className='cons-sub'; sub.textContent=item.sub; div.appendChild(sub); }
+  return div;
+}
+
+function buildConsumi(){ const wrap=document.getElementById('consumi'); consData.forEach((d,i)=>wrap.appendChild(makeCons(d,i))); }
+
+function attachTooltips(){
+  const tip=document.getElementById('tooltip');
+  document.addEventListener('pointermove',e=>{ const t=e.target.closest('[data-tip]'); if(!t){tip.style.opacity=0;return;} tip.textContent=t.dataset.tip; tip.style.opacity=1; const x=Math.min(e.clientX+14,innerWidth-tip.offsetWidth-12), y=Math.min(e.clientY+14,innerHeight-tip.offsetHeight-12); tip.style.left=x+'px'; tip.style.top=y+'px';});
+  document.addEventListener('pointerleave',()=>tip.style.opacity=0);
+}
+
+function boot(){ buildWave(); buildLosses(); buildConsumi(); attachTooltips(); }
+document.getElementById('replay')?.addEventListener('click',()=>location.reload());
+boot();
+function postHeight(){parent.postMessage({type:'gitbook-embed-height',height:document.documentElement.scrollHeight},'*')} new ResizeObserver(postHeight).observe(document.body); addEventListener('load',postHeight);
+</script>
+
+<div aria-labelledby="viz-info-title" aria-modal="true" class="viz-modal" hidden="" role="dialog">
+<section class="viz-dialog">
+<button aria-label="Chiudi" class="viz-close" data-viz-action="close" type="button">×</button>
+<h2 id="viz-info-title">Come leggere la visualizzazione</h2>
+<p>La pagina è una ricostruzione interattiva dell’infografica originale, ottimizzata per l’inserimento in GitBook.</p>
+<ul>
+<li>Passa il puntatore sugli elementi interattivi per visualizzare i dettagli.</li>
+<li><strong>Rivedi</strong> riavvia le animazioni; <strong>Pausa</strong> le interrompe temporaneamente.</li>
+<li><strong>Espandi</strong> migliora la lettura dei grafici complessi.</li>
+<li><strong>Stampa</strong> consente anche il salvataggio in PDF dal browser.</li>
+</ul>
+</section>
+</div>
+<script>
+(function(){
+  const root=document.querySelector('.shell,.embed-shell,main')||document.body;
+  const toolbar=document.querySelector('.viz-toolbar');
+  const modal=document.querySelector('.viz-modal');
+  const close=()=>{if(modal){modal.hidden=true;document.body.style.overflow='';}};
+  document.addEventListener('click',async(e)=>{
+    const b=e.target.closest('[data-viz-action]'); if(!b)return;
+    const a=b.dataset.vizAction;
+    if(a==='replay'){location.reload();}
+    if(a==='pause'){
+      root.classList.toggle('viz-paused');
+      const paused=root.classList.contains('viz-paused');
+      b.setAttribute('aria-pressed',String(paused));
+      const label=b.querySelector('.viz-label'); if(label)label.textContent=paused?'Riprendi':'Pausa';
+      b.title=paused?'Riprendi animazioni':'Metti in pausa le animazioni';
+    }
+    if(a==='fullscreen'){
+      try{
+        if(!document.fullscreenElement){await root.requestFullscreen();root.classList.add('viz-fullscreen');}
+        else{await document.exitFullscreen();}
+      }catch(_){root.classList.toggle('viz-fullscreen');}
+    }
+    if(a==='info'&&modal){modal.hidden=false;document.body.style.overflow='hidden';modal.querySelector('.viz-close')?.focus();}
+    if(a==='close')close();
+    if(a==='print')window.print();
+  });
+  document.addEventListener('fullscreenchange',()=>{if(!document.fullscreenElement)root.classList.remove('viz-fullscreen');});
+  modal?.addEventListener('click',e=>{if(e.target===modal)close();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal&&!modal.hidden)close();});
+  if(toolbar && root!==document.body && toolbar.parentElement!==root) root.prepend(toolbar);
+})();
+</script></body>
+</html>

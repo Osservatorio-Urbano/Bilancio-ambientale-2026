@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+
+<html lang="it">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
+<title>Verde urbano — versione GitBook senza sankey</title>
+<style>
+:root{
+  --green:#55ad6f;--green-700:#278d50;--green-100:#ebf6ee;--green-200:#d7ebdd;
+  --pink:#c63f8b;--pink-700:#a42d70;--pink-100:#f7ebf2;--pink-200:#f0dbe8;
+  --ink:#233129;--muted:#65746c;--paper:#ffffff;--soft:#f5f8f6;--line:#dfe7e1;
+  --radius:20px;--shadow:0 20px 50px rgba(27,68,43,.09);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:transparent;color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+button{font:inherit}
+.embed-shell{width:min(1480px,100%);margin:auto;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 24px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.97);position:sticky;top:0;z-index:10}
+.brand{display:flex;align-items:center;gap:12px}
+.brand-mark{width:10px;height:34px;border-radius:999px;background:linear-gradient(180deg,var(--green),var(--pink))}
+.eyebrow{margin:0;color:var(--green-700);font-weight:900;font-size:13px;letter-spacing:.12em;text-transform:uppercase}
+.title{margin:3px 0 0;font-size:clamp(18px,2vw,26px);line-height:1.05}
+.subtitle{margin:4px 0 0;color:var(--muted);font-size:13px}
+.actions{display:flex;gap:8px}
+.icon-btn{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:999px;padding:9px 13px;cursor:pointer;font-weight:800;transition:.2s}
+.icon-btn:hover{transform:translateY(-1px);border-color:var(--green-200);background:var(--green-100)}
+.dashboard{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(420px,.88fr);min-height:880px}
+.left{padding:28px;background:#fff}.right{padding:28px;background:linear-gradient(145deg,#4da866,#58b074);color:#fff}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:0 8px 24px rgba(29,69,44,.055)}
+.card+.card{margin-top:20px}
+.section-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:16px}
+.section-kicker{margin:0 0 4px;color:var(--green-700);font-size:12px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+.section-title{margin:0;color:var(--ink);font-size:clamp(16px,1.6vw,20px);line-height:1.2}
+.unit{flex:0 0 auto;background:var(--green-100);color:var(--green-700);border-radius:999px;padding:6px 10px;font-size:12px;font-weight:900}
+.kpi-total{display:grid;grid-template-columns:1.05fr .95fr;gap:16px;margin-bottom:16px}
+.hero-total{border-radius:18px;padding:22px;background:linear-gradient(135deg,#f6fbf8,#e7f4eb);border:1px solid var(--green-200)}
+.hero-total .label{font-size:12px;font-weight:900;letter-spacing:.08em;color:var(--green-700);text-transform:uppercase}
+.hero-total .value{font-size:clamp(30px,4vw,46px);font-weight:900;line-height:1;margin:8px 0;color:var(--green-700)}
+.hero-total .note{font-size:14px;color:var(--muted);line-height:1.35}
+.breakdown{display:grid;gap:12px}
+.break-card{border-radius:16px;padding:16px;border:1px solid var(--line);background:#fff;opacity:0;transform:translateY(8px);animation:rise .5s ease forwards}
+.break-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:10px}
+.break-name{font-size:15px;font-weight:900;line-height:1.2}
+.break-amount{font-size:22px;font-weight:900;line-height:1;color:var(--ink)}
+.break-tag{font-size:12px;font-weight:900;padding:6px 9px;border-radius:999px;white-space:nowrap}
+.break-card.green .break-tag{background:var(--green-100);color:var(--green-700)}
+.break-card.pink .break-tag{background:var(--pink-100);color:var(--pink-700)}
+.progress{height:10px;border-radius:999px;background:var(--soft);overflow:hidden}
+.progress span{display:block;height:100%;width:0;border-radius:inherit;animation:grow 1.1s ease forwards}
+.break-card.green .progress span{background:linear-gradient(90deg,var(--green),#7cc090)}
+.break-card.pink .progress span{background:linear-gradient(90deg,var(--pink),#e1a3cb)}
+.group-grid{display:grid;gap:14px}
+.group{border:1px solid var(--line);border-radius:18px;padding:16px;background:#fff}
+.group-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:12px}
+.group-title{font-size:16px;font-weight:900;line-height:1.2}
+.group-value{font-size:20px;font-weight:900;line-height:1;color:var(--ink)}
+.group-sub{font-size:13px;color:var(--muted)}
+.mini-bars{display:grid;gap:10px}
+.mini-row{display:grid;grid-template-columns:minmax(0,1fr) 108px;gap:12px;align-items:center;opacity:0;transform:translateY(6px);animation:rise .45s ease forwards}
+.mini-label{font-size:13px;line-height:1.2;color:#3f4d45}
+.mini-track{position:relative;height:8px;border-radius:999px;background:var(--soft);overflow:hidden;margin-top:5px}
+.mini-track span{display:block;height:100%;width:0;border-radius:inherit;animation:grow 1s ease forwards}
+.group.green .mini-track span{background:var(--green)}
+.group.pink .mini-track span{background:var(--pink)}
+.mini-value{font-weight:900;font-size:14px;text-align:right;font-variant-numeric:tabular-nums}
+.donut-area{display:grid;grid-template-columns:minmax(240px,.78fr) 1.22fr;gap:26px;align-items:center}
+.donut-holder{position:relative;max-width:300px;margin:auto;aspect-ratio:1}
+.donut{width:100%;height:100%;transform:rotate(-90deg)}
+.donut circle{fill:none;stroke-width:18}.track{stroke:#f5e8f0}.seg{stroke-linecap:butt;stroke-dasharray:0 100;animation:donut 1.4s ease forwards}
+.donut-center{position:absolute;inset:27%;display:grid;place-content:center;text-align:center;border-radius:50%;background:#fff;box-shadow:inset 0 0 0 1px var(--line)}
+.donut-center strong{font-size:26px;color:var(--pink)}.donut-center span{font-size:11px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.06em}
+.legend{display:grid;gap:9px}.legend-item{display:grid;grid-template-columns:10px 68px 1fr;gap:9px;align-items:start;padding:8px 10px;border-radius:11px;opacity:0;transform:translateY(6px);animation:rise .45s ease forwards}.legend-item:hover{background:var(--soft)}.dot{width:10px;height:10px;border-radius:50%;margin-top:4px}.pct{font-weight:900}.desc{color:#415047;line-height:1.25}
+.right-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:16px}.right h2{margin:0;font-size:clamp(22px,2.6vw,32px)}.right p{margin:5px 0 0;color:rgba(255,255,255,.88);font-size:13px}.key{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.34);border-radius:999px;padding:8px 12px;font-size:12px;font-weight:900;white-space:nowrap}
+.sprout-icon{width:22px;height:22px;animation:sway 2.5s ease-in-out infinite;transform-origin:center bottom}
+.plant-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.plant-panel{background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.28);border-radius:16px;padding:16px;backdrop-filter:blur(3px)}.plant-panel h3{margin:0 0 6px;font-size:16px;line-height:1.16;min-height:58px}.sub{font-size:12px;color:rgba(255,255,255,.82);font-weight:800;margin-bottom:10px}.year-row{display:grid;grid-template-columns:45px minmax(0,1fr) 70px;align-items:center;gap:8px;min-height:66px;border-top:1px solid rgba(255,255,255,.35);padding:8px 0}.year{font-weight:900}.icons{display:flex;gap:1px;align-items:center;flex-wrap:wrap;max-height:42px;overflow:hidden}.tree{width:15px;height:18px;opacity:0;transform:translateY(8px) scale(.7);animation:pop .28s ease forwards}.num{justify-self:end;background:#fff;color:var(--green-700);font-weight:950;padding:3px 6px;border-radius:4px;font-size:13px;font-variant-numeric:tabular-nums}.bar{grid-column:2/4;height:3px;border-radius:999px;background:rgba(255,255,255,.16);overflow:hidden;margin-top:-7px}.bar>span{display:block;height:100%;width:0;background:#fff;border-radius:inherit;animation:grow 1.1s ease forwards}
+.source{display:flex;justify-content:space-between;gap:12px;padding:14px 24px;background:var(--soft);border-top:1px solid var(--line);font-size:11px;color:var(--muted)}
+.tooltip{position:fixed;z-index:99;pointer-events:none;max-width:260px;padding:9px 11px;border-radius:9px;background:#20352a;color:#fff;font-size:12px;line-height:1.35;box-shadow:0 8px 24px rgba(0,0,0,.2);opacity:0;transform:translateY(5px);transition:.12s}.hoverable{cursor:help}
+@keyframes rise{to{opacity:1;transform:none}}@keyframes grow{to{width:var(--w)}}@keyframes donut{to{stroke-dasharray:var(--v) 100}}@keyframes pop{to{opacity:1;transform:none}}@keyframes sway{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+@media(max-width:1080px){.dashboard{grid-template-columns:1fr}.embed-shell{border-radius:14px}}
+@media(max-width:780px){.topbar{padding:14px 16px}.left,.right{padding:16px}.card{padding:15px}.kpi-total,.donut-area,.plant-grid{grid-template-columns:1fr}.hero-total .value{font-size:34px}.right-head{flex-direction:column}.source{flex-direction:column;padding:12px 16px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}.seg{stroke-dasharray:var(--v) 100}.progress span,.mini-track span,.bar>span{width:var(--w)}}
+</style>
+<style>
+/* --- Shared interactive controls: GitBook edition --- */
+:root{--ui-control-bg:rgba(255,255,255,.94);--ui-control-ink:#25332c;--ui-control-line:rgba(25,45,35,.14);--ui-focus:rgba(62,143,99,.28)}
+.viz-toolbar{position:absolute;top:14px;right:14px;z-index:1000;display:flex;gap:7px;align-items:center;padding:6px;border:1px solid var(--ui-control-line);border-radius:999px;background:rgba(255,255,255,.78);box-shadow:0 8px 28px rgba(20,35,28,.12);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.viz-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:36px;border:1px solid var(--ui-control-line);border-radius:999px;padding:7px 11px;background:var(--ui-control-bg);color:var(--ui-control-ink);font:800 12px/1.1 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;cursor:pointer;transition:transform .16s ease,box-shadow .16s ease,background .16s ease;white-space:nowrap}
+.viz-btn:hover{transform:translateY(-1px);box-shadow:0 5px 14px rgba(30,50,40,.12);background:#fff}.viz-btn:focus-visible{outline:3px solid var(--ui-focus);outline-offset:2px}.viz-btn svg{width:16px;height:16px;flex:none}
+.viz-modal[hidden]{display:none}.viz-modal{position:fixed;inset:0;z-index:5000;display:grid;place-items:center;padding:20px;background:rgba(15,25,20,.45);backdrop-filter:blur(5px)}
+.viz-dialog{width:min(560px,100%);max-height:min(78vh,680px);overflow:auto;border-radius:20px;background:#fff;color:#26352d;box-shadow:0 24px 80px rgba(0,0,0,.28);padding:24px;position:relative}
+.viz-dialog h2{margin:0 42px 10px 0!important;color:#26352d!important;font-size:20px!important;text-transform:none!important}.viz-dialog p{margin:8px 0!important;color:#58675f!important;font-size:14px!important;line-height:1.5!important}.viz-dialog ul{margin:12px 0 0;padding-left:20px;color:#435149;font-size:14px;line-height:1.5}.viz-close{position:absolute;top:14px;right:14px;width:34px;height:34px;border:1px solid #dfe7e2;border-radius:50%;background:#fff;color:#26352d;font-size:20px;cursor:pointer}
+.viz-paused *, .viz-paused *::before,.viz-paused *::after{animation-play-state:paused!important}
+.viz-fullscreen{width:100vw!important;max-width:none!important;height:100vh!important;overflow:auto!important;border-radius:0!important;margin:0!important}
+.viz-fullscreen .viz-toolbar{position:fixed}
+body{position:relative}.shell,.embed-shell,main{position:relative}
+@media(max-width:760px){.viz-toolbar{position:sticky;top:8px;right:auto;margin:8px 8px 0 auto;width:max-content;max-width:calc(100% - 16px);overflow-x:auto}.viz-btn .viz-label{display:none}.viz-btn{padding:8px;min-width:36px}.viz-dialog{padding:20px}}
+@media print{.viz-toolbar,.viz-modal{display:none!important}.shell,.embed-shell{box-shadow:none!important;border:0!important}}
+</style></head>
+<body>
+<main class="embed-shell" id="visual">
+<nav aria-label="Comandi della visualizzazione" class="viz-toolbar">
+<button class="viz-btn" data-viz-action="replay" title="Rivedi le animazioni" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8 M3 3v5h5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span class="viz-label">Rivedi</span></button>
+<button aria-pressed="false" class="viz-btn" data-viz-action="pause" title="Metti in pausa le animazioni" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M8 5v14 M16 5v14" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span class="viz-label">Pausa</span></button>
+<button class="viz-btn" data-viz-action="fullscreen" title="Apri a schermo intero" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M8 3H3v5 M16 3h5v5 M8 21H3v-5 M16 21h5v-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span class="viz-label">Espandi</span></button>
+<button class="viz-btn" data-viz-action="print" title="Stampa o salva in PDF" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M6 9V3h12v6 M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2 M6 14h12v7H6z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span class="viz-label">Stampa</span></button>
+<button class="viz-btn" data-viz-action="info" title="Informazioni e istruzioni" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M12 17v-6 M12 7h.01 M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span class="viz-label">Info</span></button>
+</nav>
+
+<header class="topbar">
+<div class="brand">
+<span aria-hidden="true" class="brand-mark"></span>
+<div>
+<p class="eyebrow">Summary by numbers</p>
+<h1 class="title">Verde urbano e piantumazioni</h1>
+<p class="subtitle">Versione interattiva ottimizzata per GitBook.</p>
+</div>
+</div>
+
+</header>
+<div class="dashboard">
+<section aria-label="Verde urbano e habitat" class="left">
+<article class="card">
+<div class="section-head">
+<div>
+<p class="section-kicker">Patrimonio verde · 2025</p>
+<h2 class="section-title">Verde urbano a gestione comunale</h2>
+</div>
+<span class="unit">m²</span>
+</div>
+<div class="kpi-total">
+<div class="hero-total hoverable" data-tip="Superficie complessiva del verde urbano a gestione comunale nel 2025.">
+<div class="label">Totale</div>
+<div class="value counter" data-target="9791601">0</div>
+<div class="note">Patrimonio suddiviso in <strong>verde fruibile liberamente</strong>, <strong>arredo urbano</strong> e <strong>altre tipologie</strong>.</div>
+</div>
+<div class="breakdown" id="breakdown"></div>
+</div>
+<div class="group-grid" id="groups"></div>
+</article>
+<article class="card">
+<div class="section-head">
+<div>
+<p class="section-kicker">Carta Natura ISPRA · 2021</p>
+<h2 class="section-title">Categorie di habitat presenti nel territorio comunale</h2>
+</div>
+<span class="unit">%</span>
+</div>
+<div class="donut-area">
+<div class="donut-holder hoverable" data-tip="Le aree coltivate rappresentano il 67,45% del territorio; le aree antropiche il 29,33%.">
+<svg aria-label="Grafico ad anello delle categorie di habitat" class="donut" role="img" viewbox="0 0 120 120">
+<circle class="track" cx="60" cy="60" pathlength="100" r="42"></circle>
+<circle class="seg" cx="60" cy="60" pathlength="100" r="42" stroke="#edcfe2" style="--v:67.45"></circle>
+<circle class="seg" cx="60" cy="60" pathlength="100" r="42" stroke="#c63f8b" stroke-dashoffset="-67.45" style="--v:29.33;animation-delay:.16s"></circle>
+<circle class="seg" cx="60" cy="60" pathlength="100" r="42" stroke="#228f4c" stroke-dashoffset="-96.78" style="--v:1.85;animation-delay:.28s"></circle>
+<circle class="seg" cx="60" cy="60" pathlength="100" r="42" stroke="#5aaa66" stroke-dashoffset="-98.63" style="--v:.88;animation-delay:.40s"></circle>
+<circle class="seg" cx="60" cy="60" pathlength="100" r="42" stroke="#3f9752" stroke-dashoffset="-99.51" style="--v:.48;animation-delay:.52s"></circle>
+<circle class="seg" cx="60" cy="60" pathlength="100" r="42" stroke="#afc96e" stroke-dashoffset="-99.99" style="--v:.01;animation-delay:.64s"></circle>
+</svg>
+<div class="donut-center"><strong>96,78%</strong><span>coltivo + antropico</span></div>
+</div>
+<div class="legend" id="legend"></div>
+</div>
+</article>
+</section>
+<aside aria-label="Piantumazioni annuali" class="right">
+<div class="right-head">
+<div>
+<h2>Piantumazioni</h2>
+<p>Alberi e arbusti messi a dimora o distribuiti ogni anno.</p>
+</div>
+<div class="key"><svg aria-hidden="true" class="sprout-icon" viewbox="0 0 24 24"><path d="M11 21v-7.1C6.8 13.4 4.4 11 4 7.2c3.8-.4 6.2 1.6 7 4.6V9.7C11.4 5.8 13.8 3.8 18 4c.1 4.1-2.1 6.7-6 7.4V21z" fill="currentColor"></path></svg>1 icona = 1.000</div>
+</div>
+<div class="plant-grid">
+<section class="plant-panel"><h3>Alberature messe a dimora in aree comunali</h3><div class="sub">Numero di alberi / arbusti</div><div id="leftRows"></div></section>
+<section class="plant-panel"><h3>Alberature distribuite a Reggio Emilia — progetto “Mettiamo radici per il futuro”</h3><div class="sub">Numero di alberi / arbusti</div><div id="rightRows"></div></section>
+</div>
+</aside>
+</div>
+<footer class="source">
+<span>Elaborazione grafica interattiva su dati 2021–2025.</span>
+<span>Ottimizzata per integrazione in GitBook via iframe o embed.</span>
+</footer>
+</main>
+<div aria-live="polite" class="tooltip" id="tooltip" role="status"></div>
+<script>
+const total = 9791601;
+const groups = [
+  {
+    cls:'green', name:'Verde fruibile liberamente', value:4550724, pct:'46,5%',
+    tip:'Comprende ville, parchi, giardini tutelati, parchi urbani, verde attrezzato, orti urbani e aree verdi sportive.',
+    items:[
+      ['Ville, parchi, giardini tutelati',610069],
+      ['Parchi urbani (> 8.000 m²)',2998191],
+      ['Verde attrezzato (< 8.000 m²)',398570],
+      ['Orti urbani',12549],
+      ['Aree verdi sportive',431345]
+    ]
+  },
+  {
+    cls:'pink', name:'Arredo urbano', value:2173665, pct:'22,2%',
+    tip:'Aree verdi di arredo urbano.',
+    items:[['Aree verdi di arredo urbano',2173665]]
+  },
+  {
+    cls:'pink', name:'Altre tipologie', value:3167212, pct:'32,3%',
+    tip:'Comprende giardini scolastici, verde cimiteriale, forestazione urbana, aree boschive e altre tipologie di aree verdi.',
+    items:[
+      ['Giardini scolastici',332149],
+      ['Verde cimiteriale',371895],
+      ['Forestazione urbana',313342],
+      ['Aree boschive',182583],
+      ['Altre tipologie di aree verdi',1967242]
+    ]
+  }
+];
+const habitat=[
+  ['#edcfe2','67,45%','Habitat di tipo coltivo'],['#228f4c','1,85%','Boschi di latifoglie e conifere'],['#5aaa66','0,88%','Praterie e prati sfalciati'],['#3f9752','0,48%','Ambienti fluviali, laghi e zone umide'],['#afc96e','0,01%','Brughiere e cespuglieti'],['#c63f8b','29,33%','Aree antropiche']
+];
+const leftData=[[2019,1932],[2020,3606],[2021,1765],[2022,4093],[2023,9556],[2024,1268],[2025,2370]];
+const rightData=[[2020,14271],[2021,27190],[2022,22512],[2023,16346],[2024,26832],[2025,8574]];
+const fmt=n=>new Intl.NumberFormat('it-IT').format(n);
+const treeSvg='<svg class="tree" viewBox="0 0 20 24" aria-hidden="true"><path fill="currentColor" d="M9 22v-6.2C5.7 15.2 3.6 13.1 3.5 9.6c3.2-.2 5.2 1.4 5.9 4V11C9.7 7.3 11.8 5.2 16 5.4c-.1 3.8-2.3 6.1-6 6.8V22z"/></svg>';
+
+function buildBreakdown(){
+  const wrap=document.getElementById('breakdown');
+  groups.forEach((g,i)=>{
+    const row=document.createElement('div');
+    row.className=`break-card ${g.cls} hoverable`;
+    row.style.animationDelay=`${.12+i*.08}s`;
+    row.dataset.tip=g.tip;
+    const w=(g.value/total*100).toFixed(1)+'%';
+    row.innerHTML=`<div class="break-top"><div><div class="break-name">${g.name}</div><div class="break-amount counter" data-target="${g.value}">0</div></div><span class="break-tag">${g.pct}</span></div><div class="progress"><span style="--w:${w}"></span></div>`;
+    wrap.appendChild(row);
+  });
+}
+
+function buildGroups(){
+  const wrap=document.getElementById('groups');
+  groups.forEach((g,gi)=>{
+    const max=Math.max(...g.items.map(x=>x[1]));
+    const el=document.createElement('section');
+    el.className=`group ${g.cls}`;
+    el.innerHTML=`<div class="group-head"><div><div class="group-title">${g.name}</div><div class="group-sub">Dettaglio per sottocategorie</div></div><div class="group-value">${fmt(g.value)}</div></div><div class="mini-bars"></div>`;
+    const bars=el.querySelector('.mini-bars');
+    g.items.forEach((item,ii)=>{
+      const row=document.createElement('div');
+      row.className='mini-row hoverable';
+      row.style.animationDelay=`${.22+gi*.1+ii*.06}s`;
+      row.dataset.tip=`${item[0]}: ${fmt(item[1])} m²`;
+      row.innerHTML=`<div><div class="mini-label">${item[0]}</div><div class="mini-track"><span style="--w:${(item[1]/max*100).toFixed(1)}%"></span></div></div><div class="mini-value">${fmt(item[1])}</div>`;
+      bars.appendChild(row);
+    });
+    wrap.appendChild(el);
+  });
+}
+
+function buildLegend(){
+  const el=document.getElementById('legend');
+  habitat.forEach((h,i)=>{
+    const row=document.createElement('div');
+    row.className='legend-item';
+    row.style.animationDelay=`${.18+i*.08}s`;
+    row.innerHTML=`<span class="dot" style="background:${h[0]}"></span><span class="pct" style="color:${h[0]==='#edcfe2'?'#dcaaca':h[0]}">${h[1]}</span><span class="desc">${h[2]}</span>`;
+    el.appendChild(row);
+  });
+}
+
+function makeRows(target,data,offset){
+  const max=Math.max(...data.map(x=>x[1]));
+  data.forEach(([year,val],r)=>{
+    const row=document.createElement('div');
+    row.className='year-row hoverable';
+    row.dataset.tip=`${year}: ${fmt(val)} alberi o arbusti`;
+    const count=Math.max(1,Math.round(val/1000));
+    row.innerHTML=`<div class="year">${year}</div><div class="icons" aria-hidden="true"></div><div class="num counter" data-target="${val}">0</div><div class="bar"><span style="--w:${(val/max*100).toFixed(1)}%;animation-delay:${offset+r*.06}s"></span></div>`;
+    const icons=row.querySelector('.icons');
+    for(let i=0;i<count;i++){
+      const wrap=document.createElement('span');
+      wrap.innerHTML=treeSvg;
+      const svg=wrap.firstChild;
+      svg.style.animationDelay=`${offset+r*.06+i*.022}s`;
+      icons.appendChild(svg);
+    }
+    target.appendChild(row);
+  });
+}
+
+function animateCounter(el){
+  if(el.dataset.done) return;
+  el.dataset.done='1';
+  const target=+el.dataset.target, start=performance.now(), dur=1100;
+  function tick(now){
+    const p=Math.min(1,(now-start)/dur), e=1-Math.pow(1-p,3);
+    el.textContent=fmt(Math.round(target*e));
+    if(p<1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+function init(){
+  buildBreakdown();
+  buildGroups();
+  buildLegend();
+  makeRows(document.getElementById('leftRows'),leftData,.40);
+  makeRows(document.getElementById('rightRows'),rightData,.58);
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){animateCounter(e.target);io.unobserve(e.target)}}),{threshold:.35});
+  document.querySelectorAll('.counter').forEach(x=>io.observe(x));
+}
+
+const tip=document.getElementById('tooltip');
+document.addEventListener('pointermove',e=>{
+  const t=e.target.closest('[data-tip]');
+  if(!t){tip.style.opacity=0;return}
+  tip.textContent=t.dataset.tip;
+  tip.style.opacity=1;
+  const x=Math.min(e.clientX+14,innerWidth-tip.offsetWidth-12), y=Math.min(e.clientY+14,innerHeight-tip.offsetHeight-12);
+  tip.style.left=x+'px'; tip.style.top=y+'px';
+});
+document.addEventListener('pointerleave',()=>tip.style.opacity=0);
+document.getElementById('replay')?.addEventListener('click',()=>location.reload());
+
+init();
+function postHeight(){parent.postMessage({type:'gitbook-embed-height',height:document.documentElement.scrollHeight},'*')}
+new ResizeObserver(postHeight).observe(document.body);
+addEventListener('load',postHeight);
+</script>
+
+<div aria-labelledby="viz-info-title" aria-modal="true" class="viz-modal" hidden="" role="dialog">
+<section class="viz-dialog">
+<button aria-label="Chiudi" class="viz-close" data-viz-action="close" type="button">×</button>
+<h2 id="viz-info-title">Come leggere la visualizzazione</h2>
+<p>La pagina è una ricostruzione interattiva dell’infografica originale, ottimizzata per l’inserimento in GitBook.</p>
+<ul>
+<li>Passa il puntatore sugli elementi interattivi per visualizzare i dettagli.</li>
+<li><strong>Rivedi</strong> riavvia le animazioni; <strong>Pausa</strong> le interrompe temporaneamente.</li>
+<li><strong>Espandi</strong> migliora la lettura dei grafici complessi.</li>
+<li><strong>Stampa</strong> consente anche il salvataggio in PDF dal browser.</li>
+</ul>
+</section>
+</div>
+<script>
+(function(){
+  const root=document.querySelector('.shell,.embed-shell,main')||document.body;
+  const toolbar=document.querySelector('.viz-toolbar');
+  const modal=document.querySelector('.viz-modal');
+  const close=()=>{if(modal){modal.hidden=true;document.body.style.overflow='';}};
+  document.addEventListener('click',async(e)=>{
+    const b=e.target.closest('[data-viz-action]'); if(!b)return;
+    const a=b.dataset.vizAction;
+    if(a==='replay'){location.reload();}
+    if(a==='pause'){
+      root.classList.toggle('viz-paused');
+      const paused=root.classList.contains('viz-paused');
+      b.setAttribute('aria-pressed',String(paused));
+      const label=b.querySelector('.viz-label'); if(label)label.textContent=paused?'Riprendi':'Pausa';
+      b.title=paused?'Riprendi animazioni':'Metti in pausa le animazioni';
+    }
+    if(a==='fullscreen'){
+      try{
+        if(!document.fullscreenElement){await root.requestFullscreen();root.classList.add('viz-fullscreen');}
+        else{await document.exitFullscreen();}
+      }catch(_){root.classList.toggle('viz-fullscreen');}
+    }
+    if(a==='info'&&modal){modal.hidden=false;document.body.style.overflow='hidden';modal.querySelector('.viz-close')?.focus();}
+    if(a==='close')close();
+    if(a==='print')window.print();
+  });
+  document.addEventListener('fullscreenchange',()=>{if(!document.fullscreenElement)root.classList.remove('viz-fullscreen');});
+  modal?.addEventListener('click',e=>{if(e.target===modal)close();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal&&!modal.hidden)close();});
+  if(toolbar && root!==document.body && toolbar.parentElement!==root) root.prepend(toolbar);
+})();
+</script></body>
+</html>

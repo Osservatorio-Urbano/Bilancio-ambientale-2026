@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+
+<html lang="it">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
+<title>Educazione ambientale e mobilità scolastica</title>
+<style>
+:root{
+  --violet:#bd6adf;
+  --violet-dark:#a727d2;
+  --violet-soft:#ead0f6;
+  --violet-pale:#f4e8fa;
+  --paper:#ffffff;
+  --ink:#3e3550;
+  --muted:#7c6c88;
+  --line:#eadff0;
+  --shadow:0 18px 45px rgba(74,33,91,.10);
+  --radius:22px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:transparent;color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+button{font:inherit}
+svg{display:block;width:100%;height:auto}
+.shell{width:min(1480px,100%);margin:auto;border:1px solid rgba(0,0,0,.05);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);background:#fff}
+.layout{display:grid;grid-template-columns:minmax(0,1.95fr) minmax(380px,.98fr)}
+.left{padding:28px 34px 24px;background:#fff}
+.right{background:var(--violet);color:#fff;display:grid;grid-template-rows:1.08fr .92fr}
+.right-top,.right-bottom{padding:30px 32px}
+.right-bottom{border-top:1px solid rgba(255,255,255,.72)}
+.toprow{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}
+.headline{margin:0;color:var(--violet);font-size:22px;font-weight:900;letter-spacing:.04em;text-transform:uppercase}
+.section-title{margin:12px 0 0;color:var(--violet);font-size:16px;font-weight:900;line-height:1.15;text-transform:uppercase}
+.unit{margin:3px 0 0;color:var(--violet);font-size:13px;font-weight:700}
+.replay{border:1px solid rgba(0,0,0,.08);background:#fff;color:var(--ink);padding:8px 12px;border-radius:999px;font-weight:800;cursor:pointer;transition:.18s}
+.replay:hover{transform:translateY(-1px)}
+.kpis{display:flex;gap:30px;flex-wrap:wrap;margin:24px 0 8px}
+.kpi{display:flex;align-items:baseline;gap:10px;color:var(--violet)}
+.kpi strong{font-size:22px}
+.kpi span{font-size:14px;font-weight:700}
+.flow-wrap{margin-top:8px}
+#schoolFlow .flow{fill:none;stroke:var(--violet-soft);stroke-linecap:butt;stroke-dasharray:1100;stroke-dashoffset:1100;animation:draw 1.5s ease forwards}
+#schoolFlow .node{fill:var(--violet);opacity:0;animation:fade .4s ease forwards}
+#schoolFlow .label-bg{fill:#fff;opacity:.96}
+#schoolFlow .label{fill:var(--violet);font-weight:900;font-size:14px}
+#schoolFlow .value{fill:var(--violet);font-size:14px;font-weight:900}
+#schoolFlow .total{fill:var(--violet);font-size:17px;font-weight:900}
+.subsection{margin:26px 0 8px;color:var(--violet);font-size:16px;font-weight:900;text-transform:uppercase}
+.subunit{margin:0 0 12px;color:var(--violet);font-size:13px;font-weight:700}
+.charts{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.chart-card{border:1px solid var(--line);border-radius:16px;padding:14px;background:#fff}
+.chart-head{display:flex;align-items:center;gap:10px;margin-bottom:8px;color:var(--violet-dark);font-size:18px;font-weight:900}
+.chart-head .icon{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--violet);color:#fff}
+.chart-head small{font-size:12px;color:var(--violet);margin-left:auto}
+.gridline{stroke:#e7dfee;stroke-dasharray:3 4}
+.axis{stroke:#85c9d9}
+.axis-text{fill:#30a8be;font-size:10px}
+.series{fill:none;stroke:var(--violet-dark);stroke-width:2.2;stroke-dasharray:1200;stroke-dashoffset:1200;animation:draw 1.4s ease forwards}
+.dot{fill:var(--violet-dark);stroke:#fff;stroke-width:1.2;opacity:0;animation:pop .28s ease forwards}
+.point-label{fill:var(--violet-dark);font-size:10px;font-weight:900}
+.right h2{margin:0;font-size:18px;line-height:1.08;font-weight:900;text-transform:uppercase}
+.sankey-right{margin-top:28px}
+#citizenFlow .flow{fill:none;stroke:rgba(243,220,252,.88);stroke-dasharray:1000;stroke-dashoffset:1000;animation:draw 1.5s ease forwards}
+#citizenFlow .node{fill:#fff}
+#citizenFlow .tag{fill:#fff}
+#citizenFlow .tag-text{fill:var(--violet);font-size:11px;font-weight:900}
+#citizenFlow .count{fill:#fff;font-size:15px;font-weight:900}
+#citizenFlow .total{fill:#fff;font-size:17px;font-weight:900}
+.mob-title{margin:0 0 6px;font-size:17px;font-weight:900;text-transform:uppercase}
+.mob-unit{margin:0 0 14px;font-size:14px;font-weight:700}
+.mob-legend{display:flex;gap:22px;font-size:13px;font-weight:800;margin-bottom:8px}
+.mob-legend span{display:flex;align-items:center;gap:7px}
+.swatch{width:13px;height:13px;display:inline-block;background:#fff}
+.swatch.bad{background:rgba(255,255,255,.35)}
+.bubbles{display:grid;grid-template-columns:repeat(4,1fr);align-items:end;gap:10px;height:285px;padding-top:12px}
+.mode{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+.mode-name{text-align:center;font-size:13px;font-weight:900;line-height:1.1;margin-bottom:8px}
+.mode-icon{width:28px;height:28px;margin-bottom:10px;color:#fff}
+.bubble-stack{position:relative;width:100%;height:210px;display:flex;justify-content:center}
+.bubble{position:absolute;border-radius:50%;display:grid;place-items:center;font-weight:900}
+.bubble.good{background:#fff;color:var(--violet)}
+.bubble.bad{background:rgba(255,255,255,.2);color:#fff}
+.divider{position:absolute;left:0;right:0;top:104px;border-top:1px dotted rgba(255,255,255,.8)}
+.weather{position:absolute;left:-22px;top:90px;display:grid;gap:34px;color:#fff}
+.weather svg{width:20px;height:20px}
+.footer-note{padding:12px 16px;background:#faf6fc;color:#77657f;text-align:center;font-size:11px}
+.tooltip{position:fixed;z-index:99;pointer-events:none;max-width:270px;padding:9px 11px;border-radius:10px;background:#2e2638;color:#fff;font-size:12px;line-height:1.35;box-shadow:0 8px 24px rgba(0,0,0,.18);opacity:0;transform:translateY(5px);transition:.12s}
+.hoverable{cursor:help}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes fade{to{opacity:1}}
+@keyframes pop{to{opacity:1;transform:none}}
+@media(max-width:1180px){.layout{grid-template-columns:1fr}.shell{border-radius:16px}}
+@media(max-width:760px){.left,.right-top,.right-bottom{padding:20px}.headline{font-size:18px}.section-title{font-size:14px}.charts{grid-template-columns:1fr}.bubbles{height:auto;grid-template-columns:1fr 1fr}.bubble-stack{height:190px}.weather{display:none}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}.flow,.series{stroke-dashoffset:0}}
+</style>
+<style>
+/* --- Shared interactive controls: GitBook edition --- */
+:root{--ui-control-bg:rgba(255,255,255,.94);--ui-control-ink:#25332c;--ui-control-line:rgba(25,45,35,.14);--ui-focus:rgba(62,143,99,.28)}
+.viz-toolbar{position:absolute;top:14px;right:14px;z-index:1000;display:flex;gap:7px;align-items:center;padding:6px;border:1px solid var(--ui-control-line);border-radius:999px;background:rgba(255,255,255,.78);box-shadow:0 8px 28px rgba(20,35,28,.12);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.viz-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:36px;border:1px solid var(--ui-control-line);border-radius:999px;padding:7px 11px;background:var(--ui-control-bg);color:var(--ui-control-ink);font:800 12px/1.1 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;cursor:pointer;transition:transform .16s ease,box-shadow .16s ease,background .16s ease;white-space:nowrap}
+.viz-btn:hover{transform:translateY(-1px);box-shadow:0 5px 14px rgba(30,50,40,.12);background:#fff}.viz-btn:focus-visible{outline:3px solid var(--ui-focus);outline-offset:2px}.viz-btn svg{width:16px;height:16px;flex:none}
+.viz-modal[hidden]{display:none}.viz-modal{position:fixed;inset:0;z-index:5000;display:grid;place-items:center;padding:20px;background:rgba(15,25,20,.45);backdrop-filter:blur(5px)}
+.viz-dialog{width:min(560px,100%);max-height:min(78vh,680px);overflow:auto;border-radius:20px;background:#fff;color:#26352d;box-shadow:0 24px 80px rgba(0,0,0,.28);padding:24px;position:relative}
+.viz-dialog h2{margin:0 42px 10px 0!important;color:#26352d!important;font-size:20px!important;text-transform:none!important}.viz-dialog p{margin:8px 0!important;color:#58675f!important;font-size:14px!important;line-height:1.5!important}.viz-dialog ul{margin:12px 0 0;padding-left:20px;color:#435149;font-size:14px;line-height:1.5}.viz-close{position:absolute;top:14px;right:14px;width:34px;height:34px;border:1px solid #dfe7e2;border-radius:50%;background:#fff;color:#26352d;font-size:20px;cursor:pointer}
+.viz-paused *, .viz-paused *::before,.viz-paused *::after{animation-play-state:paused!important}
+.viz-fullscreen{width:100vw!important;max-width:none!important;height:100vh!important;overflow:auto!important;border-radius:0!important;margin:0!important}
+.viz-fullscreen .viz-toolbar{position:fixed}
+body{position:relative}.shell,.embed-shell,main{position:relative}
+@media(max-width:760px){.viz-toolbar{position:sticky;top:8px;right:auto;margin:8px 8px 0 auto;width:max-content;max-width:calc(100% - 16px);overflow-x:auto}.viz-btn .viz-label{display:none}.viz-btn{padding:8px;min-width:36px}.viz-dialog{padding:20px}}
+@media print{.viz-toolbar,.viz-modal{display:none!important}.shell,.embed-shell{box-shadow:none!important;border:0!important}}
+</style></head>
+<body>
+<main class="shell">
+<nav aria-label="Comandi della visualizzazione" class="viz-toolbar">
+<button class="viz-btn" data-viz-action="replay" title="Rivedi le animazioni" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8 M3 3v5h5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span class="viz-label">Rivedi</span></button>
+<button aria-pressed="false" class="viz-btn" data-viz-action="pause" title="Metti in pausa le animazioni" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M8 5v14 M16 5v14" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span class="viz-label">Pausa</span></button>
+<button class="viz-btn" data-viz-action="fullscreen" title="Apri a schermo intero" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M8 3H3v5 M16 3h5v5 M8 21H3v-5 M16 21h5v-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span class="viz-label">Espandi</span></button>
+<button class="viz-btn" data-viz-action="print" title="Stampa o salva in PDF" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M6 9V3h12v6 M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2 M6 14h12v7H6z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span class="viz-label">Stampa</span></button>
+<button class="viz-btn" data-viz-action="info" title="Informazioni e istruzioni" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M12 17v-6 M12 7h.01 M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span class="viz-label">Info</span></button>
+</nav>
+
+<div class="layout">
+<section class="left">
+<div class="toprow">
+<div>
+<h1 class="headline">SUMMARY BY NUMBERS</h1>
+<div class="section-title">PROGETTI DI EDUCAZIONE AMBIENTALE PER LE SCUOLE</div>
+<p class="unit">n°/anno</p>
+</div>
+
+</div>
+<div class="kpis">
+<div class="kpi"><strong>21</strong><span>Progetti</span></div>
+<div class="kpi"><strong>6.240</strong><span>Bambini ed insegnanti coinvolti</span></div>
+</div>
+<div class="flow-wrap hoverable" data-tip="Distribuzione dei 6.240 partecipanti ai progetti di educazione ambientale per tema.">
+<svg aria-label="Distribuzione progetti ambientali per tema" id="schoolFlow" role="img" viewbox="0 0 760 350"></svg>
+</div>
+<div class="subsection">BICIBUS E PEDIBUS - COINVOLGIMENTO</div>
+<p class="subunit">n°/anno</p>
+<div class="charts">
+<article class="chart-card">
+<div class="chart-head"><span class="icon">🚲</span>BICIBUS <small>Bambini coinvolti</small></div>
+<svg aria-label="Bicibus bambini coinvolti" id="biciChart" role="img" viewbox="0 0 420 230"></svg>
+</article>
+<article class="chart-card">
+<div class="chart-head"><span class="icon">🚶</span>PEDIBUS</div>
+<svg aria-label="Pedibus bambini coinvolti" id="pediChart" role="img" viewbox="0 0 420 230"></svg>
+</article>
+</div>
+</section>
+<aside class="right">
+<section class="right-top">
+<h2>INIZIATIVE VARIE PER I CITTADINI DEDICATE<br/>ALL'AMBIENTE - 2025</h2>
+<div class="sankey-right hoverable" data-tip="39 iniziative ambientali per i cittadini, ripartite per ambito.">
+<svg aria-label="Iniziative ambientali per i cittadini" id="citizenFlow" role="img" viewbox="0 0 420 315"></svg>
+</div>
+</section>
+<section class="right-bottom">
+<div class="mob-title">MODALITÀ SPOSTAMENTO CASA-SCUOLA - 2019</div>
+<div class="mob-unit">%</div>
+<div class="mob-legend"><span><i class="swatch"></i>Bella stagione</span><span><i class="swatch bad"></i>Brutta stagione</span></div>
+<div class="bubbles" id="bubbles"></div>
+</section>
+</aside>
+</div>
+<div class="footer-note">Versione HTML animata e responsive, pronta per integrazione in GitBook.</div>
+</main>
+<div class="tooltip" id="tooltip"></div>
+<script>
+const schoolData=[
+  ['Mobilità',4273,46],
+  ['Natura',546,21],
+  ['Stili di vita',380,18],
+  ['Rifiuti-plastica',370,17],
+  ['Acqua',252,14],
+  ['Aria',187,12],
+  ['Vari',137,10],
+  ['Clima',95,8]
+];
+const citizenData=[
+  ['Mobilità',22,56],
+  ['Sostenibilità / stili di vita',8,28],
+  ['Varie',7,24],
+  ['Natura',1,8],
+  ['Rifiuti-plastica',1,8]
+];
+const years=[2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025];
+const bici=[409,290,237,119,165,205,101,87,0,8,12,25,25,17];
+const pedi=[89,119,228,83,127,167,50,90,8,5,0,0,0,0];
+const modes=[
+  {name:'Piedi',good:26,bad:20,icon:'walk'},
+  {name:'Bicicletta',good:11,bad:2,icon:'bike'},
+  {name:'Trasporto collettivo',good:13,bad:15,icon:'bus'},
+  {name:'Autovettura',good:50,bad:60,icon:'car'}
+];
+const NS='http://www.w3.org/2000/svg';
+
+function icon(type){
+  const m={
+    walk:'<svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M12 3a2 2 0 1 0 0 .1M12 7l-3 5 4 2v5m-4-3l-3 5m7-7l5 4"/></svg>',
+    bike:'<svg viewBox="0 0 24 24"><circle cx="6" cy="17" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="18" cy="17" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path fill="none" stroke="currentColor" stroke-width="1.8" d="M6 17l5-9h3l4 9M9 8h5m-3 0l-3 5m7-8a1.5 1.5 0 1 0 0 .1"/></svg>',
+    bus:'<svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="15" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M7 8h10M7 14h10" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="8" cy="19" r="1.3" fill="currentColor"/><circle cx="16" cy="19" r="1.3" fill="currentColor"/></svg>',
+    car:'<svg viewBox="0 0 24 24"><path d="M5 11l2-5h10l2 5v7H5z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M7 11h10" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="8" cy="18" r="1.3" fill="currentColor"/><circle cx="16" cy="18" r="1.3" fill="currentColor"/></svg>'
+  }; return m[type];
+}
+
+function buildSchoolFlow(){
+  const svg=document.getElementById('schoolFlow');
+  const sourceX=74, sourceY=45, sourceH=220, targetX=610;
+  const max=Math.max(...schoolData.map(d=>d[1]));
+  const total=schoolData.reduce((s,d)=>s+d[1],0);
+  let cursor=sourceY;
+  schoolData.forEach((d,i)=>{
+    const h=Math.max(8,sourceH*d[1]/total);
+    const ty=42+i*36;
+    const sw=Math.max(5,58*d[1]/max);
+    const p=document.createElementNS(NS,'path');
+    p.setAttribute('class','flow');
+    p.setAttribute('stroke-width',sw);
+    p.setAttribute('d',`M ${sourceX} ${cursor+h/2} C 260 ${cursor+h/2} 430 ${ty} ${targetX} ${ty}`);
+    p.style.animationDelay=`${i*.08}s`; svg.appendChild(p);
+    cursor+=h;
+
+    const node=document.createElementNS(NS,'rect');
+    node.setAttribute('x',targetX); node.setAttribute('y',ty-11); node.setAttribute('width',8); node.setAttribute('height',22); node.setAttribute('class','node');
+    node.style.animationDelay=`${.45+i*.08}s`; svg.appendChild(node);
+
+    const bg=document.createElementNS(NS,'rect');
+    const bw=Math.max(72,d[0].length*7.2);
+    bg.setAttribute('x',targetX-bw-10); bg.setAttribute('y',ty-14); bg.setAttribute('width',bw); bg.setAttribute('height',26); bg.setAttribute('class','label-bg'); svg.appendChild(bg);
+    const lab=document.createElementNS(NS,'text');
+    lab.setAttribute('x',targetX-16); lab.setAttribute('y',ty+5); lab.setAttribute('text-anchor','end'); lab.setAttribute('class','label'); lab.textContent=d[0]; svg.appendChild(lab);
+    const val=document.createElementNS(NS,'text');
+    val.setAttribute('x',targetX+18); val.setAttribute('y',ty+5); val.setAttribute('class','value'); val.textContent=new Intl.NumberFormat('it-IT').format(d[1]); svg.appendChild(val);
+  });
+  const src=document.createElementNS(NS,'rect'); src.setAttribute('x',sourceX-8); src.setAttribute('y',sourceY); src.setAttribute('width',8); src.setAttribute('height',220); src.setAttribute('class','node'); svg.appendChild(src);
+  const totalText=document.createElementNS(NS,'text'); totalText.setAttribute('x',sourceX-20); totalText.setAttribute('y',sourceY+110); totalText.setAttribute('text-anchor','middle'); totalText.setAttribute('transform',`rotate(-90 ${sourceX-20} ${sourceY+110})`); totalText.setAttribute('class','total'); totalText.textContent='6.240 Totale'; svg.appendChild(totalText);
+}
+
+function buildCitizenFlow(){
+  const svg=document.getElementById('citizenFlow');
+  const sourceX=12, sourceY=65, targetX=380;
+  const total=citizenData.reduce((s,d)=>s+d[1],0);
+  let cur=sourceY;
+  citizenData.forEach((d,i)=>{
+    const h=Math.max(8,175*d[1]/total);
+    const ty=54+i*46;
+    const p=document.createElementNS(NS,'path');
+    p.setAttribute('class','flow'); p.setAttribute('stroke-width',Math.max(7,h));
+    p.setAttribute('d',`M ${sourceX+10} ${cur+h/2} C 140 ${cur+h/2} 250 ${ty} ${targetX} ${ty}`);
+    p.style.animationDelay=`${i*.08}s`; svg.appendChild(p); cur+=h;
+
+    const node=document.createElementNS(NS,'rect'); node.setAttribute('x',targetX); node.setAttribute('y',ty-10); node.setAttribute('width',7); node.setAttribute('height',20); node.setAttribute('class','node'); svg.appendChild(node);
+    const bw=Math.max(56,d[0].length*5.7);
+    const tag=document.createElementNS(NS,'rect'); tag.setAttribute('x',targetX-bw-8); tag.setAttribute('y',ty-11); tag.setAttribute('width',bw); tag.setAttribute('height',22); tag.setAttribute('rx',3); tag.setAttribute('class','tag'); svg.appendChild(tag);
+    const lab=document.createElementNS(NS,'text'); lab.setAttribute('x',targetX-12); lab.setAttribute('y',ty+4); lab.setAttribute('text-anchor','end'); lab.setAttribute('class','tag-text'); lab.textContent=d[0]; svg.appendChild(lab);
+    const val=document.createElementNS(NS,'text'); val.setAttribute('x',targetX+14); val.setAttribute('y',ty+5); val.setAttribute('class','count'); val.textContent=d[1]; svg.appendChild(val);
+  });
+  const src=document.createElementNS(NS,'rect'); src.setAttribute('x',sourceX); src.setAttribute('y',sourceY); src.setAttribute('width',8); src.setAttribute('height',175); src.setAttribute('class','node'); svg.appendChild(src);
+  const totalText=document.createElementNS(NS,'text'); totalText.setAttribute('x',0); totalText.setAttribute('y',sourceY+90); totalText.setAttribute('text-anchor','middle'); totalText.setAttribute('transform',`rotate(-90 0 ${sourceY+90})`); totalText.setAttribute('class','total'); totalText.textContent='39 Totale'; svg.appendChild(totalText);
+}
+
+function buildLineChart(id,data,max){
+  const svg=document.getElementById(id);
+  const W=420,H=230,ml=36,mr=10,mt=18,mb=30,iw=W-ml-mr,ih=H-mt-mb;
+  const x=i=>ml+i*(iw/(data.length-1)), y=v=>mt+ih-(v/max)*ih;
+  for(let t=0;t<=max;t+=100){
+    const l=document.createElementNS(NS,'line'); l.setAttribute('x1',ml);l.setAttribute('x2',W-mr);l.setAttribute('y1',y(t));l.setAttribute('y2',y(t));l.setAttribute('class','gridline');svg.appendChild(l);
+    const tx=document.createElementNS(NS,'text');tx.setAttribute('x',2);tx.setAttribute('y',y(t)+3);tx.setAttribute('class','axis-text');tx.textContent=t;svg.appendChild(tx);
+  }
+  const ax=document.createElementNS(NS,'line');ax.setAttribute('x1',ml);ax.setAttribute('x2',ml);ax.setAttribute('y1',mt);ax.setAttribute('y2',H-mb);ax.setAttribute('class','axis');svg.appendChild(ax);
+  const ay=document.createElementNS(NS,'line');ay.setAttribute('x1',ml);ay.setAttribute('x2',W-mr);ay.setAttribute('y1',H-mb);ay.setAttribute('y2',H-mb);ay.setAttribute('class','axis');svg.appendChild(ay);
+  const p=document.createElementNS(NS,'polyline');p.setAttribute('points',data.map((v,i)=>`${x(i)},${y(v)}`).join(' '));p.setAttribute('class','series');svg.appendChild(p);
+  data.forEach((v,i)=>{
+    const c=document.createElementNS(NS,'circle');c.setAttribute('cx',x(i));c.setAttribute('cy',y(v));c.setAttribute('r',3.2);c.setAttribute('class','dot');c.style.animationDelay=`${.55+i*.05}s`;svg.appendChild(c);
+    const lab=document.createElementNS(NS,'text');lab.setAttribute('x',x(i));lab.setAttribute('y',y(v)-8);lab.setAttribute('text-anchor','middle');lab.setAttribute('class','point-label');lab.textContent=v;svg.appendChild(lab);
+    const yr=document.createElementNS(NS,'text');yr.setAttribute('x',x(i));yr.setAttribute('y',H-8);yr.setAttribute('text-anchor','middle');yr.setAttribute('class','axis-text');yr.textContent=years[i];svg.appendChild(yr);
+  });
+}
+
+function buildBubbles(){
+  const wrap=document.getElementById('bubbles');
+  modes.forEach((m,i)=>{
+    const div=document.createElement('div'); div.className='mode';
+    const goodSize=56+m.good*.9, badSize=46+m.bad*.9;
+    div.innerHTML=`<div class="mode-name">${m.name}</div><div class="mode-icon">${icon(m.icon)}</div><div class="bubble-stack"><div class="divider"></div><div class="weather"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M12 1v3M12 20v3M1 12h3M20 12h3M4 4l2 2M18 18l2 2M20 4l-2 2M6 18l-2 2" stroke="currentColor" stroke-width="1.7"/></svg><svg viewBox="0 0 24 24"><path d="M7 16h10a4 4 0 0 0 0-8 5 5 0 0 0-9-1 4 4 0 0 0-1 9Z" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M9 18l-1 3M14 18l-1 3" stroke="currentColor" stroke-width="1.7"/></svg></div><div class="bubble good" style="width:${goodSize}px;height:${goodSize}px;top:0">${m.good}</div><div class="bubble bad" style="width:${badSize}px;height:${badSize}px;bottom:0">${m.bad}</div></div>`;
+    wrap.appendChild(div);
+  });
+}
+
+function tooltips(){
+  const tip=document.getElementById('tooltip');
+  document.addEventListener('pointermove',e=>{
+    const t=e.target.closest('[data-tip]');
+    if(!t){tip.style.opacity=0;return}
+    tip.textContent=t.dataset.tip;tip.style.opacity=1;
+    const x=Math.min(e.clientX+14,innerWidth-tip.offsetWidth-12),y=Math.min(e.clientY+14,innerHeight-tip.offsetHeight-12);
+    tip.style.left=x+'px';tip.style.top=y+'px';
+  });
+  document.addEventListener('pointerleave',()=>tip.style.opacity=0);
+}
+
+buildSchoolFlow();
+buildCitizenFlow();
+buildLineChart('biciChart',bici,500);
+buildLineChart('pediChart',pedi,300);
+buildBubbles();
+tooltips();
+document.getElementById('replay')?.addEventListener('click',()=>location.reload());
+function postHeight(){parent.postMessage({type:'gitbook-embed-height',height:document.documentElement.scrollHeight},'*')}
+new ResizeObserver(postHeight).observe(document.body);addEventListener('load',postHeight);
+</script>
+
+<div aria-labelledby="viz-info-title" aria-modal="true" class="viz-modal" hidden="" role="dialog">
+<section class="viz-dialog">
+<button aria-label="Chiudi" class="viz-close" data-viz-action="close" type="button">×</button>
+<h2 id="viz-info-title">Come leggere la visualizzazione</h2>
+<p>La pagina è una ricostruzione interattiva dell’infografica originale, ottimizzata per l’inserimento in GitBook.</p>
+<ul>
+<li>Passa il puntatore sugli elementi interattivi per visualizzare i dettagli.</li>
+<li><strong>Rivedi</strong> riavvia le animazioni; <strong>Pausa</strong> le interrompe temporaneamente.</li>
+<li><strong>Espandi</strong> migliora la lettura dei grafici complessi.</li>
+<li><strong>Stampa</strong> consente anche il salvataggio in PDF dal browser.</li>
+</ul>
+</section>
+</div>
+<script>
+(function(){
+  const root=document.querySelector('.shell,.embed-shell,main')||document.body;
+  const toolbar=document.querySelector('.viz-toolbar');
+  const modal=document.querySelector('.viz-modal');
+  const close=()=>{if(modal){modal.hidden=true;document.body.style.overflow='';}};
+  document.addEventListener('click',async(e)=>{
+    const b=e.target.closest('[data-viz-action]'); if(!b)return;
+    const a=b.dataset.vizAction;
+    if(a==='replay'){location.reload();}
+    if(a==='pause'){
+      root.classList.toggle('viz-paused');
+      const paused=root.classList.contains('viz-paused');
+      b.setAttribute('aria-pressed',String(paused));
+      const label=b.querySelector('.viz-label'); if(label)label.textContent=paused?'Riprendi':'Pausa';
+      b.title=paused?'Riprendi animazioni':'Metti in pausa le animazioni';
+    }
+    if(a==='fullscreen'){
+      try{
+        if(!document.fullscreenElement){await root.requestFullscreen();root.classList.add('viz-fullscreen');}
+        else{await document.exitFullscreen();}
+      }catch(_){root.classList.toggle('viz-fullscreen');}
+    }
+    if(a==='info'&&modal){modal.hidden=false;document.body.style.overflow='hidden';modal.querySelector('.viz-close')?.focus();}
+    if(a==='close')close();
+    if(a==='print')window.print();
+  });
+  document.addEventListener('fullscreenchange',()=>{if(!document.fullscreenElement)root.classList.remove('viz-fullscreen');});
+  modal?.addEventListener('click',e=>{if(e.target===modal)close();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal&&!modal.hidden)close();});
+  if(toolbar && root!==document.body && toolbar.parentElement!==root) root.prepend(toolbar);
+})();
+</script></body>
+</html>

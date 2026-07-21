@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+
+<html lang="it">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
+<title>Summary by numbers — Autovetture e mobilità</title>
+<style>
+:root{
+  --paper:#f2f2f2;
+  --ink:#2f2f2f;
+  --muted:#6f6f6f;
+  --orange:#e9993a;
+  --orange-dark:#d9841b;
+  --orange-soft:#f8e5c9;
+  --graybar:#707070;
+  --grayline:#7a7a7a;
+  --purple:#7a2cc6;
+  --purple-soft:#a66ae0;
+  --white:#fff;
+  --line:#dddddd;
+  --radius:22px;
+  --shadow:0 18px 42px rgba(0,0,0,.08);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:transparent;color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+button{font:inherit}
+.shell{width:min(1480px,100%);margin:auto;border:1px solid rgba(0,0,0,.05);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+.layout{display:grid;grid-template-columns:minmax(0,1.92fr) minmax(360px,.92fr)}
+.left{background:var(--paper);padding:26px 32px 20px}
+.right{background:var(--orange);color:#fff;padding:26px 0 0;display:flex;flex-direction:column}
+.toprow{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.headline{margin:0;color:var(--orange);font-weight:900;font-size:18px;letter-spacing:.05em;text-transform:uppercase}
+.section-title{margin:10px 0 14px;color:var(--orange);font-size:15px;font-weight:900;text-transform:uppercase;line-height:1.15}
+.subsection{margin:16px 0 10px;color:var(--orange);font-size:15px;font-weight:900;text-transform:uppercase;line-height:1.1}
+.replay{border:1px solid rgba(0,0,0,.08);background:#fff;color:var(--ink);padding:8px 12px;border-radius:999px;font-weight:800;cursor:pointer;transition:.18s}
+.replay:hover{transform:translateY(-1px)}
+.card{background:rgba(255,255,255,.45);border:1px solid rgba(255,255,255,.6);border-radius:18px;padding:16px;backdrop-filter:blur(4px)}
+.card+.card{margin-top:14px}
+.bar-chart{display:grid;gap:10px;padding-top:2px}
+.bar-row{display:grid;grid-template-columns:220px minmax(0,1fr) 82px;gap:12px;align-items:center}
+.bar-label{font-size:15px;font-weight:600;line-height:1.1}
+.bar-track{height:16px;border-left:2px solid #bcbcbc;background:transparent;position:relative}
+.bar-fill{position:absolute;left:0;top:0;height:16px;width:0;border-radius:0 3px 3px 0;animation:grow 1.2s cubic-bezier(.22,.61,.36,1) forwards}
+.bar-fill.gray{background:var(--graybar)}
+.bar-fill.orange{background:var(--orange)}
+.bar-fill.purple{background:var(--purple)}
+.bar-value{font-size:16px;font-weight:900;letter-spacing:.01em}
+svg{display:block;width:100%;height:auto}
+.chart-wrap{padding-top:4px}
+.chart-legend{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:10px}
+.legend-right{display:grid;gap:10px;align-content:start;padding-top:2px}
+.legend-item{font-size:13px;font-weight:900;line-height:1.1;white-space:nowrap}
+.legend-item.gray{color:var(--grayline)}
+.legend-item.orange{color:var(--orange-dark)}
+.legend-item.purple{color:var(--purple)}
+.timeline{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;align-items:start;margin-top:4px;position:relative}
+.timeline::before{content:"";position:absolute;left:6%;right:6%;top:30px;height:3px;background:var(--orange)}
+.timeline.purple-line::before{background:var(--purple);top:31px}
+.point{position:relative;text-align:center;padding-top:0}
+.point .year{font-size:16px;font-weight:900;margin-bottom:8px}
+.dot{width:var(--size);height:var(--size);border-radius:50%;background:var(--color);margin:0 auto;position:relative;z-index:2;box-shadow:0 0 0 4px rgba(255,255,255,.65)}
+.point .value{margin-top:12px;font-size:17px;font-weight:500}
+.point .value strong{font-weight:900}
+.right-head{padding:0 32px 8px}
+.right-title{margin:0;font-size:18px;font-weight:900;text-transform:uppercase;line-height:1.05}
+.right-unit{margin:4px 0 0;font-size:16px;font-weight:900}
+.compare-table{margin-top:14px;border-top:1px solid rgba(255,255,255,.85);border-bottom:1px solid rgba(255,255,255,.85)}
+.compare-head{display:grid;grid-template-columns:1fr 88px 1fr;border-bottom:1px solid rgba(255,255,255,.85)}
+.compare-head>div{padding:12px 12px 8px;text-align:center;font-size:16px;font-weight:900;line-height:1.1}
+.compare-row{display:grid;grid-template-columns:1fr 88px 1fr;min-height:142px;border-bottom:1px solid rgba(255,255,255,.65)}
+.compare-row:last-child{border-bottom:none}
+.col{padding:12px 10px 14px;display:flex;align-items:center;justify-content:center;position:relative}
+.middle{border-left:1px solid rgba(255,255,255,.85);border-right:1px solid rgba(255,255,255,.85);flex-direction:column;justify-content:flex-start;padding-top:0}
+.mode-label{background:#fff;color:var(--orange);padding:0 10px 4px;font-size:13px;font-weight:900;transform:translateY(-1px);line-height:1;border-bottom-left-radius:6px;border-bottom-right-radius:6px}
+.mode-icon{width:58px;height:58px;margin:30px auto 0;color:#fff}
+.icon svg{width:100%;height:100%}
+.people-box{width:140px}
+.people-grid{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;justify-items:center}
+.person{width:8px;height:18px;opacity:.26;transform:translateY(6px);animation:pop .28s ease forwards}
+.person.active{opacity:1}
+.person svg{display:block;width:100%;height:100%;fill:currentColor}
+.percent-badge{position:absolute;right:8px;bottom:12px;background:#fff;color:var(--orange);padding:3px 7px;border-radius:2px;font-size:14px;font-weight:900}
+.left .percent-badge{left:auto}
+.source{margin-top:auto;padding:10px 18px 14px;font-size:11px;font-weight:700;text-align:right;font-style:italic;color:rgba(255,255,255,.95)}
+.axis text{fill:#666;font-size:11px}.gridline{stroke:#d9d9d9;stroke-dasharray:2 4}.axis-line{stroke:#9a9a9a}.series{fill:none;stroke-width:2.2}.series.gray{stroke:var(--grayline)}.series.gray2{stroke:#8a8a8a}.series.orange{stroke:var(--orange-dark)}.series.purple{stroke:var(--purple)}.point-dot{stroke:#fff;stroke-width:1.3}
+.tooltip{position:fixed;z-index:99;pointer-events:none;max-width:260px;padding:9px 11px;border-radius:10px;background:#24333a;color:#fff;font-size:12px;line-height:1.35;box-shadow:0 8px 24px rgba(0,0,0,.18);opacity:0;transform:translateY(5px);transition:.12s}
+.hoverable{cursor:help}
+.footer-note{padding:12px 16px;background:rgba(255,255,255,.42);font-size:11px;color:#5d5d5d;text-align:center}
+@keyframes grow{to{width:var(--w)}}
+@keyframes pop{to{opacity:1;transform:none}}
+@media(max-width:1180px){.layout{grid-template-columns:1fr}.shell{border-radius:16px}.right{padding-top:18px}}
+@media(max-width:760px){.left{padding:18px}.right-head{padding:0 18px 6px}.compare-head>div{font-size:14px}.compare-row{grid-template-columns:1fr 74px 1fr;min-height:126px}.bar-row{grid-template-columns:1fr;gap:6px}.bar-track{height:14px}.bar-value{justify-self:end}.timeline{grid-template-columns:repeat(4,1fr)}.timeline::before{display:none}.people-box{width:118px}.headline{font-size:16px}.section-title,.subsection{font-size:14px}.mode-label{font-size:12px}.source{text-align:center}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}.bar-fill{width:var(--w)}}
+</style>
+<style>
+/* --- Shared interactive controls: GitBook edition --- */
+:root{--ui-control-bg:rgba(255,255,255,.94);--ui-control-ink:#25332c;--ui-control-line:rgba(25,45,35,.14);--ui-focus:rgba(62,143,99,.28)}
+.viz-toolbar{position:absolute;top:14px;right:14px;z-index:1000;display:flex;gap:7px;align-items:center;padding:6px;border:1px solid var(--ui-control-line);border-radius:999px;background:rgba(255,255,255,.78);box-shadow:0 8px 28px rgba(20,35,28,.12);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.viz-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:36px;border:1px solid var(--ui-control-line);border-radius:999px;padding:7px 11px;background:var(--ui-control-bg);color:var(--ui-control-ink);font:800 12px/1.1 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;cursor:pointer;transition:transform .16s ease,box-shadow .16s ease,background .16s ease;white-space:nowrap}
+.viz-btn:hover{transform:translateY(-1px);box-shadow:0 5px 14px rgba(30,50,40,.12);background:#fff}.viz-btn:focus-visible{outline:3px solid var(--ui-focus);outline-offset:2px}.viz-btn svg{width:16px;height:16px;flex:none}
+.viz-modal[hidden]{display:none}.viz-modal{position:fixed;inset:0;z-index:5000;display:grid;place-items:center;padding:20px;background:rgba(15,25,20,.45);backdrop-filter:blur(5px)}
+.viz-dialog{width:min(560px,100%);max-height:min(78vh,680px);overflow:auto;border-radius:20px;background:#fff;color:#26352d;box-shadow:0 24px 80px rgba(0,0,0,.28);padding:24px;position:relative}
+.viz-dialog h2{margin:0 42px 10px 0!important;color:#26352d!important;font-size:20px!important;text-transform:none!important}.viz-dialog p{margin:8px 0!important;color:#58675f!important;font-size:14px!important;line-height:1.5!important}.viz-dialog ul{margin:12px 0 0;padding-left:20px;color:#435149;font-size:14px;line-height:1.5}.viz-close{position:absolute;top:14px;right:14px;width:34px;height:34px;border:1px solid #dfe7e2;border-radius:50%;background:#fff;color:#26352d;font-size:20px;cursor:pointer}
+.viz-paused *, .viz-paused *::before,.viz-paused *::after{animation-play-state:paused!important}
+.viz-fullscreen{width:100vw!important;max-width:none!important;height:100vh!important;overflow:auto!important;border-radius:0!important;margin:0!important}
+.viz-fullscreen .viz-toolbar{position:fixed}
+body{position:relative}.shell,.embed-shell,main{position:relative}
+@media(max-width:760px){.viz-toolbar{position:sticky;top:8px;right:auto;margin:8px 8px 0 auto;width:max-content;max-width:calc(100% - 16px);overflow-x:auto}.viz-btn .viz-label{display:none}.viz-btn{padding:8px;min-width:36px}.viz-dialog{padding:20px}}
+@media print{.viz-toolbar,.viz-modal{display:none!important}.shell,.embed-shell{box-shadow:none!important;border:0!important}}
+</style></head>
+<body>
+<main class="shell" id="visual">
+<nav aria-label="Comandi della visualizzazione" class="viz-toolbar">
+<button class="viz-btn" data-viz-action="replay" title="Rivedi le animazioni" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8 M3 3v5h5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span class="viz-label">Rivedi</span></button>
+<button aria-pressed="false" class="viz-btn" data-viz-action="pause" title="Metti in pausa le animazioni" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M8 5v14 M16 5v14" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span class="viz-label">Pausa</span></button>
+<button class="viz-btn" data-viz-action="fullscreen" title="Apri a schermo intero" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M8 3H3v5 M16 3h5v5 M8 21H3v-5 M16 21h5v-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span class="viz-label">Espandi</span></button>
+<button class="viz-btn" data-viz-action="print" title="Stampa o salva in PDF" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M6 9V3h12v6 M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2 M6 14h12v7H6z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span class="viz-label">Stampa</span></button>
+<button class="viz-btn" data-viz-action="info" title="Informazioni e istruzioni" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M12 17v-6 M12 7h.01 M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span class="viz-label">Info</span></button>
+</nav>
+
+<div class="layout">
+<section class="left">
+<div class="toprow">
+<div>
+<h1 class="headline">SUMMARY BY NUMBERS</h1>
+<div class="section-title">AUTOVETTURE INTESTATE A REGGIO A PERSONE FISICHE E GIURIDICHE - 2025</div>
+</div>
+
+</div>
+<div class="card hoverable" data-tip="Distribuzione delle autovetture per alimentazione nel 2025.">
+<div class="bar-chart" id="barChart"></div>
+</div>
+<div class="subsection">ANDAMENTO 2019-2025</div>
+<div class="card chart-wrap hoverable" data-tip="Andamento 2019-2025 delle principali alimentazioni delle autovetture.">
+<div class="chart-legend">
+<svg aria-label="Andamento 2019-2025" id="trendChart" role="img" viewbox="0 0 780 280"></svg>
+<div class="legend-right" id="trendLegend"></div>
+</div>
+</div>
+<div class="subsection">TOTALE AUTOVETTURE PERSONE FISICHE E GIURIDICHE</div>
+<div class="card hoverable" data-tip="Totale autovetture intestate a persone fisiche e giuridiche.">
+<div class="timeline" id="timelineTotal"></div>
+</div>
+<div class="subsection">TOTALE AUTOVETTURE SOLO PERSONE FISICHE</div>
+<div class="card hoverable" data-tip="Totale autovetture intestate alle sole persone fisiche.">
+<div class="timeline purple-line" id="timelinePeople"></div>
+</div>
+</section>
+<aside class="right">
+<div class="right-head">
+<h2 class="right-title">MODALITÀ DI SPOSTAMENTO DEI CITTADINI<br/>INDAGINI CAMPIONARIE</h2>
+<div class="right-unit">%</div>
+</div>
+<div class="compare-table">
+<div class="compare-head">
+<div>Reggio Emilia<br/>dati 2023</div>
+<div></div>
+<div>Città Italiane<br/>dati 2023</div>
+</div>
+<div id="compareRows"></div>
+</div>
+<div class="source">Fonte: 21° Rapporto ISFORT<br/>sulla mobilità degli italiani</div>
+</aside>
+</div>
+<div class="footer-note">Versione HTML animata e responsive, pronta per embed in GitBook.</div>
+</main>
+<div aria-live="polite" class="tooltip" id="tooltip" role="status"></div>
+<script>
+const bars=[
+  ['gasolio',64713,'gray'],
+  ['benzina',51470,'gray'],
+  ['ibridi a benzina-elettrico',29806,'orange'],
+  ['gpl e gpl-benzina',17068,'purple'],
+  ['ibridi a gasolio-elettrico',8759,'orange'],
+  ['metano e metano-benzina',6970,'purple'],
+  ['elettrici',2890,'orange']
+];
+const trendYears=[2019,2020,2021,2022,2023,2024,2025];
+const series=[
+  {name:'gasolio',color:'gray',labelColor:'gray',data:[40500,42500,41800,44500,58200,63700,64713]},
+  {name:'benzina',color:'gray2',labelColor:'gray',data:[37200,38800,38000,40500,48100,50100,51470]},
+  {name:'ibridi a benzina-elettrico',color:'orange',labelColor:'orange',data:[13800,15600,16100,17800,23600,28600,29806]},
+  {name:'gpl e gpl-benzina',color:'purple',labelColor:'purple',data:[7800,8600,9800,11700,16300,17600,17068]},
+  {name:'ibridi a gasolio-elettrico',color:'orange',labelColor:'orange',data:[2500,3200,4600,5800,7600,8400,8759]},
+  {name:'metano e metano-benzina',color:'purple',labelColor:'purple',data:[2300,2100,1800,2600,3800,5200,6970]},
+  {name:'elettrici',color:'orange',labelColor:'orange',data:[120,180,260,420,760,1200,2890]}
+];
+const totalCars=[[2019,110300],[2020,113965],[2021,113704],[2022,123416],[2023,153880],[2024,172332],[2025,181701]];
+const totalPeople=[[2020,102692],[2021,103486],[2022,104240],[2023,105469],[2024,107066],[2025,108231]];
+const modes=[
+  {name:'A piedi', re:8.9, it:18.6, icon:'walk'},
+  {name:'Treno/Bus', re:8.0, it:8.6, icon:'bus'},
+  {name:'Bicicletta', re:18.6, it:3.9, icon:'bike'},
+  {name:'Auto/moto', re:64.5, it:68.9, icon:'car'}
+];
+const fmt=n=>new Intl.NumberFormat('it-IT').format(n);
+const fmtPct=n=>String(n).replace('.',',');
+const personSvg='<svg viewBox="0 0 10 22" aria-hidden="true"><circle cx="5" cy="3" r="2.1"/><rect x="3.3" y="6" width="3.4" height="7.2" rx="1.2"/><rect x="1.2" y="8.2" width="1.8" height="5.4" rx=".8"/><rect x="7" y="8.2" width="1.8" height="5.4" rx=".8"/><rect x="3.2" y="13.2" width="1.8" height="7.2" rx=".8"/><rect x="5.1" y="13.2" width="1.8" height="7.2" rx=".8"/></svg>';
+
+function buildBars(){
+  const max=Math.max(...bars.map(b=>b[1]));
+  const wrap=document.getElementById('barChart');
+  bars.forEach((b,i)=>{
+    const row=document.createElement('div');
+    row.className='bar-row';
+    row.innerHTML=`<div class="bar-label">${b[0]}</div><div class="bar-track"><div class="bar-fill ${b[2]}" style="--w:${(b[1]/max*100).toFixed(1)}%;animation-delay:${i*.08}s"></div></div><div class="bar-value">${fmt(b[1])}</div>`;
+    wrap.appendChild(row);
+  });
+}
+
+function buildTrend(){
+  const svg=document.getElementById('trendChart');
+  const NS='http://www.w3.org/2000/svg';
+  const W=780,H=280, ml=44, mr=78, mt=10, mb=34;
+  const iw=W-ml-mr, ih=H-mt-mb;
+  const max=70000, min=0;
+  const y=v=>mt+ih-(v-min)/(max-min)*ih;
+  const x=i=>ml+(i/(trendYears.length-1))*iw;
+  const ticks=[0,10000,20000,30000,40000,50000,60000,70000];
+  ticks.forEach(t=>{
+    const line=document.createElementNS(NS,'line');
+    line.setAttribute('x1',ml); line.setAttribute('x2',W-mr+10); line.setAttribute('y1',y(t)); line.setAttribute('y2',y(t)); line.setAttribute('class','gridline');
+    svg.appendChild(line);
+    const tx=document.createElementNS(NS,'text');
+    tx.setAttribute('x',0); tx.setAttribute('y',y(t)+4); tx.setAttribute('class','axis'); tx.textContent=fmt(t);
+    svg.appendChild(tx);
+  });
+  const axis=document.createElementNS(NS,'line'); axis.setAttribute('x1',ml); axis.setAttribute('x2',ml); axis.setAttribute('y1',mt); axis.setAttribute('y2',H-mb+4); axis.setAttribute('class','axis-line'); svg.appendChild(axis);
+  trendYears.forEach((yr,i)=>{
+    const tx=document.createElementNS(NS,'text'); tx.setAttribute('x',x(i)); tx.setAttribute('y',H-8); tx.setAttribute('text-anchor','middle'); tx.setAttribute('class','axis'); tx.textContent=yr; svg.appendChild(tx);
+  });
+  series.forEach((s,si)=>{
+    const pts=s.data.map((v,i)=>`${x(i)},${y(v)}`).join(' ');
+    const poly=document.createElementNS(NS,'polyline'); poly.setAttribute('points',pts); poly.setAttribute('class',`series ${s.color}`); poly.style.strokeDasharray='1200'; poly.style.strokeDashoffset='1200'; poly.style.animation=`growline 1.4s ease forwards ${si*.12}s`; svg.appendChild(poly);
+    s.data.forEach((v,i)=>{
+      const c=document.createElementNS(NS,'circle'); c.setAttribute('cx',x(i)); c.setAttribute('cy',y(v)); c.setAttribute('r',4.4); c.setAttribute('class','point-dot'); c.setAttribute('fill',s.color==='gray'||s.color==='gray2'?'#7d7d7d':(s.color==='orange'?'#e9993a':'#7a2cc6')); c.style.opacity='0'; c.style.animation=`pop .28s ease forwards ${si*.12 + i*.06 + .55}s`; svg.appendChild(c);
+    });
+  });
+  const style=document.createElement('style'); style.textContent='@keyframes growline{to{stroke-dashoffset:0}}'; document.head.appendChild(style);
+
+  const legend=document.getElementById('trendLegend');
+  series.forEach(s=>{
+    const el=document.createElement('div'); el.className=`legend-item ${s.labelColor}`; el.textContent=s.name; legend.appendChild(el);
+  });
+}
+
+function buildTimeline(targetId,data,color){
+  const wrap=document.getElementById(targetId);
+  const max=Math.max(...data.map(d=>d[1]));
+  data.forEach(([year,val])=>{
+    const point=document.createElement('div');
+    const size=14 + (val/max)*12;
+    point.className='point';
+    point.innerHTML=`<div class="year">${year}</div><div class="dot" style="--size:${size.toFixed(1)}px;--color:${color}"></div><div class="value"><strong>${fmt(val)}</strong></div>`;
+    wrap.appendChild(point);
+  });
+}
+
+function iconMarkup(type){
+  const icons={
+    walk:`<svg viewBox="0 0 64 64"><path fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" d="M31 11a4 4 0 1 0 0 .1M31 18l-5 9 8 5v10m-8-4l-5 10m13-16l9 8m-5-12l-1-8"/></svg>`,
+    bus:`<svg viewBox="0 0 64 64"><path fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round" d="M16 18h32a4 4 0 0 1 4 4v24a4 4 0 0 1-4 4H16a4 4 0 0 1-4-4V22a4 4 0 0 1 4-4Z"/><path fill="none" stroke="currentColor" stroke-width="3.5" d="M20 24h24M18 38h28"/><circle cx="22" cy="50" r="3" fill="currentColor"/><circle cx="42" cy="50" r="3" fill="currentColor"/><path fill="none" stroke="currentColor" stroke-width="3.5" d="M27 28h10"/></svg>`,
+    bike:`<svg viewBox="0 0 64 64"><circle cx="18" cy="48" r="8" fill="none" stroke="currentColor" stroke-width="3.5"/><circle cx="46" cy="48" r="8" fill="none" stroke="currentColor" stroke-width="3.5"/><path fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" d="M18 48l12-20h8l8 20M26 28l8 0m-4 0l-8 12m12-24a3 3 0 1 0 0 .1"/></svg>`,
+    car:`<svg viewBox="0 0 64 64"><path fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round" d="M18 24h28l3 10v12a4 4 0 0 1-4 4H19a4 4 0 0 1-4-4V34l3-10Z"/><path fill="none" stroke="currentColor" stroke-width="3.5" d="M21 24l3-7a4 4 0 0 1 3.8-2.8h8.4A4 4 0 0 1 40 17l3 7M20 38h24"/><circle cx="23" cy="48" r="3" fill="currentColor"/><circle cx="41" cy="48" r="3" fill="currentColor"/></svg>`
+  };
+  return icons[type] || '';
+}
+
+function peopleGrid(percent, sideLabelColor=''){ 
+  const active=Math.round(percent);
+  let html='<div class="people-box"><div class="people-grid">';
+  for(let i=0;i<100;i++){
+    const cls=i<active?'person active':'person';
+    html+=`<div class="${cls}" style="color:${i<active?'#fff':'#f4c27c'};animation-delay:${(i*.008).toFixed(2)}s">${personSvg}</div>`;
+  }
+  html+='</div></div>';
+  return html;
+}
+
+function buildCompare(){
+  const wrap=document.getElementById('compareRows');
+  modes.forEach((m,ri)=>{
+    const row=document.createElement('div'); row.className='compare-row';
+    row.innerHTML=`
+      <div class="col hoverable" data-tip="${m.name} — Reggio Emilia: ${fmtPct(m.re)}%">${peopleGrid(m.re)}<div class="percent-badge">${fmtPct(m.re)}</div></div>
+      <div class="col middle"><div class="mode-label">${m.name}</div><div class="icon mode-icon">${iconMarkup(m.icon)}</div></div>
+      <div class="col hoverable" data-tip="${m.name} — Città italiane: ${fmtPct(m.it)}%">${peopleGrid(m.it)}<div class="percent-badge">${fmtPct(m.it)}</div></div>`;
+    wrap.appendChild(row);
+  });
+}
+
+function attachTooltips(){
+  const tip=document.getElementById('tooltip');
+  document.addEventListener('pointermove',e=>{
+    const t=e.target.closest('[data-tip]');
+    if(!t){tip.style.opacity=0;return}
+    tip.textContent=t.dataset.tip; tip.style.opacity=1;
+    const x=Math.min(e.clientX+14,innerWidth-tip.offsetWidth-12), y=Math.min(e.clientY+14,innerHeight-tip.offsetHeight-12);
+    tip.style.left=x+'px'; tip.style.top=y+'px';
+  });
+  document.addEventListener('pointerleave',()=>tip.style.opacity=0);
+}
+
+function boot(){
+  buildBars();
+  buildTrend();
+  buildTimeline('timelineTotal', totalCars, '#e9993a');
+  buildTimeline('timelinePeople', totalPeople, '#7a2cc6');
+  buildCompare();
+  attachTooltips();
+}
+
+document.getElementById('replay')?.addEventListener('click',()=>location.reload());
+boot();
+function postHeight(){parent.postMessage({type:'gitbook-embed-height',height:document.documentElement.scrollHeight},'*')}
+new ResizeObserver(postHeight).observe(document.body); addEventListener('load',postHeight);
+</script>
+
+<div aria-labelledby="viz-info-title" aria-modal="true" class="viz-modal" hidden="" role="dialog">
+<section class="viz-dialog">
+<button aria-label="Chiudi" class="viz-close" data-viz-action="close" type="button">×</button>
+<h2 id="viz-info-title">Come leggere la visualizzazione</h2>
+<p>La pagina è una ricostruzione interattiva dell’infografica originale, ottimizzata per l’inserimento in GitBook.</p>
+<ul>
+<li>Passa il puntatore sugli elementi interattivi per visualizzare i dettagli.</li>
+<li><strong>Rivedi</strong> riavvia le animazioni; <strong>Pausa</strong> le interrompe temporaneamente.</li>
+<li><strong>Espandi</strong> migliora la lettura dei grafici complessi.</li>
+<li><strong>Stampa</strong> consente anche il salvataggio in PDF dal browser.</li>
+</ul>
+</section>
+</div>
+<script>
+(function(){
+  const root=document.querySelector('.shell,.embed-shell,main')||document.body;
+  const toolbar=document.querySelector('.viz-toolbar');
+  const modal=document.querySelector('.viz-modal');
+  const close=()=>{if(modal){modal.hidden=true;document.body.style.overflow='';}};
+  document.addEventListener('click',async(e)=>{
+    const b=e.target.closest('[data-viz-action]'); if(!b)return;
+    const a=b.dataset.vizAction;
+    if(a==='replay'){location.reload();}
+    if(a==='pause'){
+      root.classList.toggle('viz-paused');
+      const paused=root.classList.contains('viz-paused');
+      b.setAttribute('aria-pressed',String(paused));
+      const label=b.querySelector('.viz-label'); if(label)label.textContent=paused?'Riprendi':'Pausa';
+      b.title=paused?'Riprendi animazioni':'Metti in pausa le animazioni';
+    }
+    if(a==='fullscreen'){
+      try{
+        if(!document.fullscreenElement){await root.requestFullscreen();root.classList.add('viz-fullscreen');}
+        else{await document.exitFullscreen();}
+      }catch(_){root.classList.toggle('viz-fullscreen');}
+    }
+    if(a==='info'&&modal){modal.hidden=false;document.body.style.overflow='hidden';modal.querySelector('.viz-close')?.focus();}
+    if(a==='close')close();
+    if(a==='print')window.print();
+  });
+  document.addEventListener('fullscreenchange',()=>{if(!document.fullscreenElement)root.classList.remove('viz-fullscreen');});
+  modal?.addEventListener('click',e=>{if(e.target===modal)close();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal&&!modal.hidden)close();});
+  if(toolbar && root!==document.body && toolbar.parentElement!==root) root.prepend(toolbar);
+})();
+</script></body>
+</html>
