@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
-<title>Verde urbano — versione GitBook senza sankey</title>
+<title>Verde urbano e piantumazioni — Bilancio ambientale</title>
 <style>
 :root{
   --green:#55ad6f;--green-700:#278d50;--green-100:#ebf6ee;--green-200:#d7ebdd;
@@ -97,17 +97,24 @@ button{font:inherit}
 body{position:relative}.shell,.embed-shell,main{position:relative}
 @media(max-width:760px){.viz-toolbar{position:sticky;top:8px;right:auto;margin:8px 8px 0 auto;width:max-content;max-width:calc(100% - 16px);overflow-x:auto}.viz-btn .viz-label{display:none}.viz-btn{padding:8px;min-width:36px}.viz-dialog{padding:20px}}
 @media print{.viz-toolbar,.viz-modal{display:none!important}.shell,.embed-shell{box-shadow:none!important;border:0!important}}
+</style><meta content="Verde urbano e piantumazioni. Versione interattiva ottimizzata per GitBook." name="description"/><meta content="#ffffff" name="theme-color"/><style>
+/* --- Intestazione coordinata Bilancio ambientale --- */
+.ba-global-header{position:relative;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:22px 26px;border-bottom:1px solid rgba(40,65,55,.12);background:linear-gradient(135deg,rgba(255,255,255,.98),rgba(248,251,249,.95));}
+.ba-global-brand{display:flex;align-items:center;gap:13px;min-width:0}.ba-global-mark{width:9px;height:48px;border-radius:999px;background:linear-gradient(180deg,var(--green,var(--blue,var(--teal,#4a95d3))),var(--pink,var(--orange,var(--red,#c9567d))));flex:none}.ba-global-copy{min-width:0}.ba-global-eyebrow{margin:0 0 4px;font-size:11px;line-height:1;font-weight:900;letter-spacing:.13em;text-transform:uppercase;color:#64736b}.ba-global-title{margin:0;font-size:clamp(20px,2.1vw,30px);line-height:1.08;color:#26362e;font-weight:900;letter-spacing:-.02em}.ba-global-subtitle{margin:6px 0 0;color:#66766d;font-size:13px;font-weight:700;line-height:1.35}.ba-global-badge{flex:none;display:inline-flex;align-items:center;gap:7px;border:1px solid rgba(40,65,55,.12);border-radius:999px;padding:8px 11px;background:#fff;color:#52635a;font-size:11px;font-weight:900;box-shadow:0 6px 18px rgba(28,48,38,.06)}
+.ba-global-badge::before{content:'●';font-size:8px;color:#46a76b}.ba-global-header + .layout .headline,.ba-global-header + .dashboard .headline{display:none!important}
+.shell,.embed-shell{background:#fff}.tooltip{max-width:min(300px,calc(100vw - 24px))!important}.viz-toolbar{max-width:calc(100% - 28px)}
+@media(max-width:760px){.ba-global-header{padding:17px 16px;align-items:flex-start}.ba-global-mark{height:42px}.ba-global-badge{display:none}.ba-global-title{font-size:20px}.ba-global-subtitle{font-size:12px}.viz-toolbar{max-width:calc(100% - 16px)}}
+@media print{.ba-global-header{padding:12px 0;background:#fff}.ba-global-badge{display:none}.ba-global-title{font-size:20px}}
 </style></head>
 <body>
 <main class="embed-shell" id="visual">
 <nav aria-label="Comandi della visualizzazione" class="viz-toolbar">
-<button class="viz-btn" data-viz-action="replay" title="Rivedi le animazioni" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8 M3 3v5h5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span class="viz-label">Rivedi</span></button>
-<button aria-pressed="false" class="viz-btn" data-viz-action="pause" title="Metti in pausa le animazioni" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M8 5v14 M16 5v14" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span class="viz-label">Pausa</span></button>
-<button class="viz-btn" data-viz-action="fullscreen" title="Apri a schermo intero" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M8 3H3v5 M16 3h5v5 M8 21H3v-5 M16 21h5v-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span class="viz-label">Espandi</span></button>
-<button class="viz-btn" data-viz-action="print" title="Stampa o salva in PDF" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M6 9V3h12v6 M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2 M6 14h12v7H6z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span class="viz-label">Stampa</span></button>
-<button class="viz-btn" data-viz-action="info" title="Informazioni e istruzioni" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M12 17v-6 M12 7h.01 M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span class="viz-label">Info</span></button>
+<button class="viz-btn" data-viz-action="replay" title="Rivedi le animazioni" type="button"><svg aria-hidden="true" focusable="false" viewbox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8 M3 3v5h5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span class="viz-label">Rivedi</span></button>
+<button aria-pressed="false" class="viz-btn" data-viz-action="pause" title="Metti in pausa le animazioni" type="button"><svg aria-hidden="true" focusable="false" viewbox="0 0 24 24"><path d="M8 5v14 M16 5v14" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span class="viz-label">Pausa</span></button>
+<button class="viz-btn" data-viz-action="fullscreen" title="Apri a schermo intero" type="button"><svg aria-hidden="true" focusable="false" viewbox="0 0 24 24"><path d="M8 3H3v5 M16 3h5v5 M8 21H3v-5 M16 21h5v-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span class="viz-label">Espandi</span></button>
+<button class="viz-btn" data-viz-action="print" title="Stampa o salva in PDF" type="button"><svg aria-hidden="true" focusable="false" viewbox="0 0 24 24"><path d="M6 9V3h12v6 M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2 M6 14h12v7H6z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span class="viz-label">Stampa</span></button>
+<button class="viz-btn" data-viz-action="info" title="Informazioni e istruzioni" type="button"><svg aria-hidden="true" focusable="false" viewbox="0 0 24 24"><path d="M12 17v-6 M12 7h.01 M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span class="viz-label">Info</span></button>
 </nav>
-
 <header class="topbar">
 <div class="brand">
 <span aria-hidden="true" class="brand-mark"></span>
@@ -117,7 +124,6 @@ body{position:relative}.shell,.embed-shell,main{position:relative}
 <p class="subtitle">Versione interattiva ottimizzata per GitBook.</p>
 </div>
 </div>
-
 </header>
 <div class="dashboard">
 <section aria-label="Verde urbano e habitat" class="left">
@@ -149,7 +155,7 @@ body{position:relative}.shell,.embed-shell,main{position:relative}
 </div>
 <div class="donut-area">
 <div class="donut-holder hoverable" data-tip="Le aree coltivate rappresentano il 67,45% del territorio; le aree antropiche il 29,33%.">
-<svg aria-label="Grafico ad anello delle categorie di habitat" class="donut" role="img" viewbox="0 0 120 120">
+<svg aria-label="Grafico ad anello delle categorie di habitat" class="donut" focusable="false" role="img" viewbox="0 0 120 120">
 <circle class="track" cx="60" cy="60" pathlength="100" r="42"></circle>
 <circle class="seg" cx="60" cy="60" pathlength="100" r="42" stroke="#edcfe2" style="--v:67.45"></circle>
 <circle class="seg" cx="60" cy="60" pathlength="100" r="42" stroke="#c63f8b" stroke-dashoffset="-67.45" style="--v:29.33;animation-delay:.16s"></circle>
@@ -170,7 +176,7 @@ body{position:relative}.shell,.embed-shell,main{position:relative}
 <h2>Piantumazioni</h2>
 <p>Alberi e arbusti messi a dimora o distribuiti ogni anno.</p>
 </div>
-<div class="key"><svg aria-hidden="true" class="sprout-icon" viewbox="0 0 24 24"><path d="M11 21v-7.1C6.8 13.4 4.4 11 4 7.2c3.8-.4 6.2 1.6 7 4.6V9.7C11.4 5.8 13.8 3.8 18 4c.1 4.1-2.1 6.7-6 7.4V21z" fill="currentColor"></path></svg>1 icona = 1.000</div>
+<div class="key"><svg aria-hidden="true" class="sprout-icon" focusable="false" viewbox="0 0 24 24"><path d="M11 21v-7.1C6.8 13.4 4.4 11 4 7.2c3.8-.4 6.2 1.6 7 4.6V9.7C11.4 5.8 13.8 3.8 18 4c.1 4.1-2.1 6.7-6 7.4V21z" fill="currentColor"></path></svg>1 icona = 1.000</div>
 </div>
 <div class="plant-grid">
 <section class="plant-panel"><h3>Alberature messe a dimora in aree comunali</h3><div class="sub">Numero di alberi / arbusti</div><div id="leftRows"></div></section>
@@ -326,7 +332,6 @@ function postHeight(){parent.postMessage({type:'gitbook-embed-height',height:doc
 new ResizeObserver(postHeight).observe(document.body);
 addEventListener('load',postHeight);
 </script>
-
 <div aria-labelledby="viz-info-title" aria-modal="true" class="viz-modal" hidden="" role="dialog">
 <section class="viz-dialog">
 <button aria-label="Chiudi" class="viz-close" data-viz-action="close" type="button">×</button>
