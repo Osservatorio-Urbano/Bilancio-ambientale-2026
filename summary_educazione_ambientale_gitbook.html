@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Educazione ambientale e mobilità scolastica</title>
+<style>
+:root{
+  --violet:#b65bd5;--violet-700:#8f2bb0;--violet-200:#e7c7f1;--violet-100:#f6eefa;
+  --plum:#6f357f;--teal:#38a7aa;--orange:#ee9a42;--ink:#342f3a;--muted:#726a78;
+  --paper:#fff;--soft:#f7f5f8;--line:#e8e0eb;--radius:22px;--shadow:0 18px 45px rgba(71,35,83,.10)
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:transparent;color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}button{font:inherit}svg{display:block;width:100%;height:auto}
+.shell{width:min(1480px,100%);margin:auto;background:var(--paper);border:1px solid rgba(0,0,0,.05);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);position:relative}
+.layout{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(390px,.85fr)}
+.left{padding:28px 32px 24px;background:linear-gradient(180deg,#fff 0%,#fbf9fc 100%)}
+.right{padding:28px;background:linear-gradient(155deg,#b65bd5 0%,#9650c4 100%);color:#fff}
+.header{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:20px}.eyebrow{margin:0;color:var(--violet);font-size:13px;font-weight:900;letter-spacing:.12em;text-transform:uppercase}.title{margin:5px 0 4px;font-size:clamp(22px,2.3vw,32px);line-height:1.05}.subtitle{margin:0;color:var(--muted);font-size:14px;line-height:1.4;max-width:680px}
+.kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}.kpi{padding:16px;border:1px solid var(--line);border-radius:17px;background:#fff;box-shadow:0 8px 20px rgba(50,30,60,.05)}.kpi strong{display:block;color:var(--violet-700);font-size:28px;line-height:1}.kpi span{display:block;margin-top:7px;color:var(--muted);font-size:12px;font-weight:800;line-height:1.25}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 8px 22px rgba(50,30,60,.045)}.card+.card{margin-top:16px}.card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:15px}.card-kicker{margin:0 0 4px;color:var(--violet-700);font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}.card-title{margin:0;font-size:18px;line-height:1.15}.pill{padding:6px 9px;border-radius:999px;background:var(--violet-100);color:var(--violet-700);font-size:11px;font-weight:900;white-space:nowrap}
+.topic-list{display:grid;gap:11px}.topic-row{display:grid;grid-template-columns:130px minmax(0,1fr) 68px;gap:12px;align-items:center}.topic-name{font-size:13px;font-weight:800}.topic-track{height:14px;background:#f0e7f4;border-radius:999px;overflow:hidden}.topic-fill{height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,var(--violet),#d79ae9);animation:grow 1.1s ease forwards}.topic-value{text-align:right;font-size:13px;font-weight:900;color:var(--violet-700)}
+.trend-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.trend-card{border:1px solid var(--line);border-radius:16px;padding:14px;background:linear-gradient(180deg,#fff,#fbf8fc)}.trend-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:7px}.trend-label{display:flex;align-items:center;gap:8px;font-weight:900;color:var(--violet-700)}.trend-icon{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--violet-100);font-size:19px}.trend-stat{text-align:right}.trend-stat strong{display:block;font-size:18px}.trend-stat span{font-size:10px;color:var(--muted);font-weight:800}.trend-svg .grid{stroke:#ece4ef;stroke-dasharray:3 4}.trend-svg .axis{stroke:#cbbad2}.trend-svg .area{fill:url(#areaGrad);opacity:.42}.trend-svg .line{fill:none;stroke:var(--violet-700);stroke-width:2.6;stroke-dasharray:1200;stroke-dashoffset:1200;animation:draw 1.4s ease forwards}.trend-svg .dot{fill:var(--violet-700);stroke:#fff;stroke-width:1.3;opacity:0;animation:pop .28s ease forwards}.trend-svg text{font-size:9px;fill:#7f7187}.trend-svg .value{fill:var(--violet-700);font-weight:900}
+.right h2{margin:0;font-size:22px;line-height:1.08}.right-sub{margin:5px 0 18px;color:rgba(255,255,255,.88);font-size:13px}.right-card{border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.09);border-radius:18px;padding:16px;backdrop-filter:blur(4px)}.right-card+.right-card{margin-top:16px}.right-card-title{margin:0 0 4px;font-size:16px}.right-card-note{margin:0 0 14px;font-size:12px;color:rgba(255,255,255,.82)}
+.initiative-list{display:grid;gap:10px}.initiative-row{display:grid;grid-template-columns:138px minmax(0,1fr) 34px;gap:10px;align-items:center}.initiative-name{font-size:12px;font-weight:800}.initiative-track{height:12px;background:rgba(255,255,255,.18);border-radius:999px;overflow:hidden}.initiative-fill{height:100%;width:0;background:#fff;border-radius:inherit;animation:grow 1.1s ease forwards}.initiative-value{font-size:13px;font-weight:900;text-align:right}.initiative-total{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,.28);font-size:13px;font-weight:800}.initiative-total strong{font-size:24px}
+.mode-table{display:grid;gap:12px}.mode-row{display:grid;grid-template-columns:108px minmax(0,1fr) 46px 46px;gap:9px;align-items:center}.mode-name{font-size:12px;font-weight:900;line-height:1.1}.season-bars{height:36px;position:relative;display:grid;gap:5px;align-content:center}.season-track{height:11px;background:rgba(255,255,255,.15);border-radius:999px;overflow:hidden}.season-fill{height:100%;width:0;border-radius:inherit;animation:grow 1.1s ease forwards}.season-fill.good{background:#fff}.season-fill.bad{background:rgba(255,255,255,.42)}.season-value{font-size:12px;font-weight:900;text-align:center}.mode-legend{display:flex;gap:14px;margin:0 0 13px;font-size:11px;font-weight:800}.mode-legend span{display:flex;gap:6px;align-items:center}.sw{width:11px;height:11px;border-radius:3px;background:#fff}.sw.bad{background:rgba(255,255,255,.42)}
+.insight{margin-top:14px;padding:13px 14px;border-radius:14px;background:#fff;color:var(--violet-700);font-size:12px;font-weight:900;line-height:1.35}.footer{padding:12px 18px;background:var(--soft);border-top:1px solid var(--line);font-size:11px;color:var(--muted);text-align:center}
+.tooltip{position:fixed;z-index:99;pointer-events:none;max-width:270px;padding:9px 11px;border-radius:10px;background:#2f2635;color:#fff;font-size:12px;line-height:1.35;box-shadow:0 8px 24px rgba(0,0,0,.18);opacity:0;transition:.12s}.hoverable{cursor:help}
+@keyframes grow{to{width:var(--w)}}@keyframes draw{to{stroke-dashoffset:0}}@keyframes pop{to{opacity:1}}
+/* toolbar */
+:root{--ui-control-bg:rgba(255,255,255,.94);--ui-control-ink:#25332c;--ui-control-line:rgba(25,45,35,.14);--ui-focus:rgba(182,91,213,.28)}
+.viz-toolbar{position:absolute;top:14px;right:14px;z-index:1000;display:flex;gap:7px;align-items:center;padding:6px;border:1px solid var(--ui-control-line);border-radius:999px;background:rgba(255,255,255,.78);box-shadow:0 8px 28px rgba(20,35,28,.12);backdrop-filter:blur(12px)}.viz-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:36px;border:1px solid var(--ui-control-line);border-radius:999px;padding:7px 11px;background:var(--ui-control-bg);color:var(--ui-control-ink);font:800 12px/1.1 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;cursor:pointer;white-space:nowrap}.viz-btn svg{width:16px;height:16px}.viz-btn:hover{transform:translateY(-1px)}.viz-modal[hidden]{display:none}.viz-modal{position:fixed;inset:0;z-index:5000;display:grid;place-items:center;padding:20px;background:rgba(15,25,20,.45);backdrop-filter:blur(5px)}.viz-dialog{width:min(560px,100%);border-radius:20px;background:#fff;padding:24px;position:relative}.viz-close{position:absolute;top:14px;right:14px;width:34px;height:34px;border:1px solid #dfe7e2;border-radius:50%;background:#fff;font-size:20px;cursor:pointer}.viz-paused *, .viz-paused *::before,.viz-paused *::after{animation-play-state:paused!important}.viz-fullscreen{width:100vw!important;max-width:none!important;height:100vh!important;overflow:auto!important;border-radius:0!important;margin:0!important}
+@media(max-width:1120px){.layout{grid-template-columns:1fr}.right{padding-top:24px}.shell{border-radius:16px}}
+@media(max-width:760px){.left,.right{padding:18px}.kpi-grid,.trend-grid{grid-template-columns:1fr}.topic-row{grid-template-columns:105px minmax(0,1fr) 58px}.mode-row{grid-template-columns:90px minmax(0,1fr) 38px 38px}.viz-toolbar{position:sticky;top:8px;margin:8px 8px 0 auto;width:max-content;max-width:calc(100% - 16px);overflow:auto}.viz-btn .viz-label{display:none}.viz-btn{padding:8px;min-width:36px}.header{padding-top:4px}}
+@media print{.viz-toolbar,.viz-modal{display:none!important}.shell{box-shadow:none;border:0}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important}.topic-fill,.initiative-fill,.season-fill{width:var(--w)}.trend-svg .line{stroke-dashoffset:0}}
+</style>
+</head>
+<body>
+<main class="shell" id="visual">
+<nav class="viz-toolbar" aria-label="Comandi della visualizzazione">
+<button class="viz-btn" data-viz-action="replay" type="button" title="Rivedi le animazioni"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8 M3 3v5h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span class="viz-label">Rivedi</span></button>
+<button class="viz-btn" data-viz-action="pause" type="button" aria-pressed="false" title="Metti in pausa"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14" fill="none" stroke="currentColor" stroke-width="2"/></svg><span class="viz-label">Pausa</span></button>
+<button class="viz-btn" data-viz-action="fullscreen" type="button" title="Schermo intero"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5" fill="none" stroke="currentColor" stroke-width="2"/></svg><span class="viz-label">Espandi</span></button>
+<button class="viz-btn" data-viz-action="print" type="button" title="Stampa o PDF"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v7H6z" fill="none" stroke="currentColor" stroke-width="2"/></svg><span class="viz-label">Stampa</span></button>
+<button class="viz-btn" data-viz-action="info" type="button" title="Informazioni"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17v-6M12 7h.01M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z" fill="none" stroke="currentColor" stroke-width="2"/></svg><span class="viz-label">Info</span></button>
+</nav>
+<div class="layout">
+<section class="left">
+  <header class="header">
+    <div><p class="eyebrow">Summary by numbers</p><h1 class="title">Educazione ambientale e mobilità scolastica</h1><p class="subtitle">Progetti per le scuole, iniziative per i cittadini e modalità di spostamento casa–scuola.</p></div>
+  </header>
+  <div class="kpi-grid">
+    <div class="kpi"><strong>21</strong><span>progetti di educazione ambientale</span></div>
+    <div class="kpi"><strong>6.240</strong><span>bambini e insegnanti coinvolti</span></div>
+    <div class="kpi"><strong>39</strong><span>iniziative ambientali rivolte ai cittadini nel 2025</span></div>
+  </div>
+  <article class="card hoverable" data-tip="Distribuzione dei partecipanti ai progetti di educazione ambientale per ambito tematico.">
+    <div class="card-head"><div><p class="card-kicker">Scuole</p><h2 class="card-title">Partecipanti per tema progettuale</h2></div><span class="pill">Totale 6.240</span></div>
+    <div class="topic-list" id="topics"></div>
+  </article>
+  <article class="card">
+    <div class="card-head"><div><p class="card-kicker">Mobilità scolastica</p><h2 class="card-title">Coinvolgimento Bicibus e Pedibus · 2012–2025</h2></div><span class="pill">bambini/anno</span></div>
+    <div class="trend-grid">
+      <div class="trend-card hoverable" data-tip="Bicibus: massimo 409 bambini nel 2012; 17 nel 2025."><div class="trend-head"><div class="trend-label"><span class="trend-icon">🚲</span>Bicibus</div><div class="trend-stat"><strong>17</strong><span>nel 2025</span></div></div><svg id="biciChart" class="trend-svg" viewBox="0 0 430 220"></svg></div>
+      <div class="trend-card hoverable" data-tip="Pedibus: massimo 228 bambini nel 2014; attività azzerata dal 2022."><div class="trend-head"><div class="trend-label"><span class="trend-icon">🚶</span>Pedibus</div><div class="trend-stat"><strong>0</strong><span>nel 2025</span></div></div><svg id="pediChart" class="trend-svg" viewBox="0 0 430 220"></svg></div>
+    </div>
+  </article>
+</section>
+<aside class="right">
+  <h2>Iniziative e comportamenti</h2><p class="right-sub">Confronto tra offerta ambientale per i cittadini e mobilità casa–scuola.</p>
+  <section class="right-card hoverable" data-tip="Ripartizione delle 39 iniziative ambientali per i cittadini realizzate nel 2025.">
+    <h3 class="right-card-title">Iniziative ambientali per ambito · 2025</h3><p class="right-card-note">Numero di iniziative</p>
+    <div class="initiative-list" id="initiatives"></div><div class="initiative-total"><span>Totale iniziative</span><strong>39</strong></div>
+  </section>
+  <section class="right-card">
+    <h3 class="right-card-title">Modalità di spostamento casa–scuola · 2019</h3><p class="right-card-note">Confronto percentuale tra bella e brutta stagione</p>
+    <div class="mode-legend"><span><i class="sw"></i>Bella stagione</span><span><i class="sw bad"></i>Brutta stagione</span></div>
+    <div class="mode-table" id="modes"></div>
+    <div class="insight">L’autovettura resta il mezzo prevalente e cresce dal 50% al 60% nella brutta stagione; bicicletta e spostamenti a piedi diminuiscono.</div>
+  </section>
+</aside>
+</div>
+<div class="footer">Elaborazione interattiva dei dati ambientali e di mobilità scolastica.</div>
+</main>
+<div class="tooltip" id="tooltip"></div>
+<div class="viz-modal" hidden role="dialog" aria-modal="true" aria-labelledby="info-title"><section class="viz-dialog"><button class="viz-close" data-viz-action="close" aria-label="Chiudi">×</button><h2 id="info-title">Come leggere la visualizzazione</h2><p>Le barre mostrano la distribuzione dei partecipanti e delle iniziative. I grafici temporali ricostruiscono l’andamento annuale di Bicibus e Pedibus. Il confronto stagionale evidenzia le variazioni nelle modalità casa–scuola.</p></section></div>
+<script>
+const schoolData=[['Mobilità',4273],['Natura',546],['Stili di vita',380],['Rifiuti-plastica',370],['Acqua',252],['Aria',187],['Vari',137],['Clima',95]];
+const citizenData=[['Mobilità',22],['Sostenibilità / stili di vita',8],['Varie',7],['Natura',1],['Rifiuti-plastica',1]];
+const years=[2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025];
+const bici=[409,290,237,119,165,205,101,87,0,8,12,25,25,17];
+const pedi=[89,119,228,83,127,167,50,90,8,5,0,0,0,0];
+const modes=[['Piedi',26,20],['Bicicletta',11,2],['Trasporto collettivo',13,15],['Autovettura',50,60]];
+const fmt=n=>new Intl.NumberFormat('it-IT').format(n);
+function buildBars(){const max=Math.max(...schoolData.map(x=>x[1]));const wrap=document.getElementById('topics');schoolData.forEach((d,i)=>{const row=document.createElement('div');row.className='topic-row';row.innerHTML=`<div class="topic-name">${d[0]}</div><div class="topic-track"><div class="topic-fill" style="--w:${(d[1]/max*100).toFixed(1)}%;animation-delay:${i*.06}s"></div></div><div class="topic-value">${fmt(d[1])}</div>`;wrap.appendChild(row)})}
+function buildInitiatives(){const max=Math.max(...citizenData.map(x=>x[1]));const wrap=document.getElementById('initiatives');citizenData.forEach((d,i)=>{const row=document.createElement('div');row.className='initiative-row';row.innerHTML=`<div class="initiative-name">${d[0]}</div><div class="initiative-track"><div class="initiative-fill" style="--w:${(d[1]/max*100).toFixed(1)}%;animation-delay:${i*.08}s"></div></div><div class="initiative-value">${d[1]}</div>`;wrap.appendChild(row)})}
+function buildModes(){const wrap=document.getElementById('modes');modes.forEach((m,i)=>{const row=document.createElement('div');row.className='mode-row';row.innerHTML=`<div class="mode-name">${m[0]}</div><div class="season-bars"><div class="season-track"><div class="season-fill good" style="--w:${m[1]}%;animation-delay:${i*.07}s"></div></div><div class="season-track"><div class="season-fill bad" style="--w:${m[2]}%;animation-delay:${.12+i*.07}s"></div></div></div><div class="season-value">${m[1]}%</div><div class="season-value">${m[2]}%</div>`;wrap.appendChild(row)})}
+function lineChart(id,data,max){const svg=document.getElementById(id),NS='http://www.w3.org/2000/svg',W=430,H=220,ml=34,mr=12,mt=16,mb=30,iw=W-ml-mr,ih=H-mt-mb,x=i=>ml+i*iw/(data.length-1),y=v=>mt+ih-v/max*ih;const defs=document.createElementNS(NS,'defs');defs.innerHTML=`<linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#b65bd5"/><stop offset="100%" stop-color="#fff" stop-opacity="0"/></linearGradient>`;svg.appendChild(defs);[0,max/2,max].forEach(t=>{const l=document.createElementNS(NS,'line');l.setAttribute('x1',ml);l.setAttribute('x2',W-mr);l.setAttribute('y1',y(t));l.setAttribute('y2',y(t));l.setAttribute('class','grid');svg.appendChild(l)});let area=`M ${x(0)} ${H-mb} `+data.map((v,i)=>`L ${x(i)} ${y(v)}`).join(' ')+` L ${x(data.length-1)} ${H-mb} Z`;const ap=document.createElementNS(NS,'path');ap.setAttribute('d',area);ap.setAttribute('class','area');svg.appendChild(ap);const p=document.createElementNS(NS,'polyline');p.setAttribute('points',data.map((v,i)=>`${x(i)},${y(v)}`).join(' '));p.setAttribute('class','line');svg.appendChild(p);data.forEach((v,i)=>{const c=document.createElementNS(NS,'circle');c.setAttribute('cx',x(i));c.setAttribute('cy',y(v));c.setAttribute('r',3.3);c.setAttribute('class','dot');c.style.animationDelay=`${.55+i*.045}s`;svg.appendChild(c);if(i%2===0||i===data.length-1){const yr=document.createElementNS(NS,'text');yr.setAttribute('x',x(i));yr.setAttribute('y',H-8);yr.setAttribute('text-anchor','middle');yr.textContent=years[i];svg.appendChild(yr)}if(v>0&&(i===0||i===data.length-1||v===Math.max(...data))){const tx=document.createElementNS(NS,'text');tx.setAttribute('x',x(i));tx.setAttribute('y',y(v)-8);tx.setAttribute('text-anchor','middle');tx.setAttribute('class','value');tx.textContent=v;svg.appendChild(tx)}})}
+function tips(){const tip=document.getElementById('tooltip');document.addEventListener('pointermove',e=>{const t=e.target.closest('[data-tip]');if(!t){tip.style.opacity=0;return}tip.textContent=t.dataset.tip;tip.style.opacity=1;tip.style.left=Math.min(e.clientX+14,innerWidth-tip.offsetWidth-12)+'px';tip.style.top=Math.min(e.clientY+14,innerHeight-tip.offsetHeight-12)+'px'});document.addEventListener('pointerleave',()=>tip.style.opacity=0)}
+function boot(){buildBars();buildInitiatives();buildModes();lineChart('biciChart',bici,450);lineChart('pediChart',pedi,250);tips()}
+boot();
+(function(){const root=document.getElementById('visual'),modal=document.querySelector('.viz-modal');const close=()=>modal.hidden=true;document.addEventListener('click',async e=>{const b=e.target.closest('[data-viz-action]');if(!b)return;const a=b.dataset.vizAction;if(a==='replay')location.reload();if(a==='pause'){root.classList.toggle('viz-paused');const p=root.classList.contains('viz-paused');b.setAttribute('aria-pressed',p);b.querySelector('.viz-label').textContent=p?'Riprendi':'Pausa'}if(a==='fullscreen'){try{if(!document.fullscreenElement){await root.requestFullscreen();root.classList.add('viz-fullscreen')}else await document.exitFullscreen()}catch(_){root.classList.toggle('viz-fullscreen')}}if(a==='print')window.print();if(a==='info')modal.hidden=false;if(a==='close')close()});document.addEventListener('fullscreenchange',()=>{if(!document.fullscreenElement)root.classList.remove('viz-fullscreen')});modal.addEventListener('click',e=>{if(e.target===modal)close()})})();
+function postHeight(){parent.postMessage({type:'gitbook-embed-height',height:document.documentElement.scrollHeight},'*')}new ResizeObserver(postHeight).observe(document.body);addEventListener('load',postHeight);
+</script>
+</body>
+</html>

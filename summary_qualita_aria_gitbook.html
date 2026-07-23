@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Qualità dell'aria — Summary by numbers</title>
+<style>
+:root{
+  --paper:#f7f6fa;--card:#fff;--ink:#2f2740;--muted:#776f82;
+  --purple:#432777;--purple2:#6e4aa2;--purpleSoft:#ded7ed;--purplePale:#f1edf7;
+  --gold:#c98e16;--green:#3e9b72;--red:#c84c61;--line:#e4deeb;
+  --shadow:0 16px 40px rgba(46,34,68,.09);--radius:22px;
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:transparent;color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}button{font:inherit}svg{display:block;width:100%;height:auto}
+.shell{width:min(1480px,100%);margin:auto;background:var(--paper);border:1px solid rgba(0,0,0,.05);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);position:relative}
+.wrap{padding:28px 32px 24px}.topbar{display:flex;justify-content:space-between;align-items:flex-start;gap:18px}.headline{margin:0;color:#6e5a93;font-size:22px;font-weight:900;letter-spacing:.04em;text-transform:uppercase}.subtitle{margin:8px 0 0;color:#6e5a93;font-size:16px;font-weight:900;text-transform:uppercase}.period{margin-top:4px;color:var(--muted);font-size:13px;font-weight:700}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:22px 0}.kpi{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px 16px;box-shadow:0 7px 18px rgba(46,34,68,.04)}.kpi strong{display:block;font-size:26px;line-height:1;color:var(--purple);font-weight:900}.kpi small{display:block;margin-top:7px;color:var(--muted);font-size:12px;font-weight:800;line-height:1.25}.kpi.good strong{color:var(--green)}.kpi.warn strong{color:var(--gold)}
+.section{margin-top:18px}.section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;margin-bottom:10px}.section-head h2{margin:0;color:#6e5a93;font-size:17px;font-weight:900;text-transform:uppercase}.section-head p{margin:0;color:var(--muted);font-size:12px;font-weight:700}.legend{display:flex;gap:14px;flex-wrap:wrap;margin:0 0 12px}.legend span{display:inline-flex;align-items:center;gap:7px;padding:6px 10px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:12px;font-weight:800}.dot{width:10px;height:10px;border-radius:50%}.dot.dark{background:var(--purple)}.dot.light{background:var(--purpleSoft)}.dot.limit{background:var(--gold)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 9px 22px rgba(46,34,68,.045)}.card.full{grid-column:1/-1}.card-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:10px}.card-title{font-size:15px;font-weight:900;line-height:1.2}.card-meta{font-size:11px;color:var(--muted);font-weight:800;text-align:right}.badge{display:inline-flex;align-items:center;gap:6px;padding:6px 9px;border-radius:999px;font-size:11px;font-weight:900;background:var(--purplePale);color:var(--purple)}.badge.good{background:#e9f5ef;color:var(--green)}.badge.warn{background:#fbf1dc;color:#9a6a0d}
+.chart{height:235px;position:relative}.axis-label{fill:#6d6575;font-size:10px}.gridline{stroke:#e7e1ed;stroke-dasharray:3 4}.baseline{stroke:#b5acbf}.limit{stroke:var(--gold);stroke-width:1.6;stroke-dasharray:6 4}.area-dark{fill:rgba(67,39,119,.88)}.area-light{fill:rgba(222,215,237,.95)}.area-mid{fill:rgba(171,153,199,.72)}.line-dark{fill:none;stroke:var(--purple);stroke-width:2.5}.line-light{fill:none;stroke:#a28fbe;stroke-width:2.5}.point{stroke:#fff;stroke-width:1.6}.value{fill:var(--purple);font-size:10px;font-weight:900}.value.white{fill:#fff}.station{margin-top:8px;color:var(--muted);font-size:11px;font-weight:700}.insight{display:flex;align-items:flex-start;gap:10px;margin-top:10px;padding:10px 12px;border-radius:13px;background:var(--purplePale);font-size:12px;font-weight:800;line-height:1.35}.insight i{width:9px;height:9px;border-radius:50%;background:var(--gold);margin-top:4px;flex:none}
+.tooltip{position:fixed;z-index:99;pointer-events:none;max-width:270px;padding:9px 11px;border-radius:10px;background:#2b2338;color:#fff;font-size:12px;line-height:1.35;box-shadow:0 8px 24px rgba(0,0,0,.18);opacity:0;transform:translateY(5px);transition:.12s}.hoverable{cursor:help}.footer-note{padding:12px 16px;background:#fbfafc;color:#756c7d;text-align:center;font-size:11px}
+@media(max-width:980px){.kpis{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.card.full{grid-column:auto}.shell{border-radius:16px}}
+@media(max-width:640px){.wrap{padding:20px 14px}.headline{font-size:18px}.subtitle{font-size:14px}.kpis{grid-template-columns:1fr}.section-head{align-items:flex-start;flex-direction:column}.chart{height:220px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}}
+/* controls */
+:root{--ui-control-bg:rgba(255,255,255,.94);--ui-control-ink:#25332c;--ui-control-line:rgba(25,45,35,.14);--ui-focus:rgba(62,143,99,.28)}
+.viz-toolbar{position:absolute;top:14px;right:14px;z-index:1000;display:flex;gap:7px;align-items:center;padding:6px;border:1px solid var(--ui-control-line);border-radius:999px;background:rgba(255,255,255,.78);box-shadow:0 8px 28px rgba(20,35,28,.12);backdrop-filter:blur(12px)}
+.viz-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:36px;border:1px solid var(--ui-control-line);border-radius:999px;padding:7px 11px;background:var(--ui-control-bg);color:var(--ui-control-ink);font:800 12px/1.1 Inter,system-ui,sans-serif;cursor:pointer;white-space:nowrap}.viz-btn svg{width:16px;height:16px}.viz-btn:hover{transform:translateY(-1px);background:#fff}.viz-btn:focus-visible{outline:3px solid var(--ui-focus);outline-offset:2px}.viz-paused *, .viz-paused *::before,.viz-paused *::after{animation-play-state:paused!important}.viz-fullscreen{width:100vw!important;max-width:none!important;height:100vh!important;overflow:auto!important;border-radius:0!important;margin:0!important}.viz-fullscreen .viz-toolbar{position:fixed}
+.viz-modal[hidden]{display:none}.viz-modal{position:fixed;inset:0;z-index:5000;display:grid;place-items:center;padding:20px;background:rgba(15,25,20,.45);backdrop-filter:blur(5px)}.viz-dialog{width:min(560px,100%);border-radius:20px;background:#fff;color:#26352d;box-shadow:0 24px 80px rgba(0,0,0,.28);padding:24px;position:relative}.viz-dialog h2{margin:0 42px 10px 0}.viz-close{position:absolute;top:14px;right:14px;width:34px;height:34px;border:1px solid #dfe7e2;border-radius:50%;background:#fff;font-size:20px;cursor:pointer}
+@media(max-width:760px){.viz-toolbar{position:sticky;top:8px;margin:8px 8px 0 auto;width:max-content;max-width:calc(100% - 16px);overflow-x:auto}.viz-btn .viz-label{display:none}.viz-btn{padding:8px;min-width:36px}}@media print{.viz-toolbar,.viz-modal{display:none!important}.shell{box-shadow:none!important;border:0!important}}
+</style>
+</head>
+<body>
+<main class="shell" id="visual">
+<nav class="viz-toolbar" aria-label="Comandi della visualizzazione">
+<button class="viz-btn" data-viz-action="replay" type="button"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8 M3 3v5h5" fill="none" stroke="currentColor" stroke-width="2"/></svg><span class="viz-label">Rivedi</span></button>
+<button class="viz-btn" data-viz-action="pause" type="button"><svg viewBox="0 0 24 24"><path d="M8 5v14 M16 5v14" fill="none" stroke="currentColor" stroke-width="2"/></svg><span class="viz-label">Pausa</span></button>
+<button class="viz-btn" data-viz-action="fullscreen" type="button"><svg viewBox="0 0 24 24"><path d="M8 3H3v5 M16 3h5v5 M8 21H3v-5 M16 21h5v-5" fill="none" stroke="currentColor" stroke-width="2"/></svg><span class="viz-label">Espandi</span></button>
+<button class="viz-btn" data-viz-action="print" type="button"><svg viewBox="0 0 24 24"><path d="M6 9V3h12v6 M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2 M6 14h12v7H6z" fill="none" stroke="currentColor" stroke-width="2"/></svg><span class="viz-label">Stampa</span></button>
+<button class="viz-btn" data-viz-action="info" type="button"><svg viewBox="0 0 24 24"><path d="M12 17v-6 M12 7h.01 M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z" fill="none" stroke="currentColor" stroke-width="2"/></svg><span class="viz-label">Info</span></button>
+</nav>
+<div class="wrap">
+  <div class="topbar"><div><h1 class="headline">SUMMARY BY NUMBERS</h1><div class="subtitle">Qualità dell’aria — evoluzione temporale</div><div class="period">Reggio Emilia · periodo 2006–2025</div></div></div>
+  <div class="kpis">
+    <div class="kpi good"><strong>-46%</strong><small>PM10 traffico urbano: da 52 a 28 µg/m³</small></div>
+    <div class="kpi good"><strong>-64%</strong><small>NO₂ traffico urbano: da 48 a 26 µg/m³</small></div>
+    <div class="kpi warn"><strong>32</strong><small>giorni di superamento PM10 a Timavo nel 2025</small></div>
+    <div class="kpi"><strong>63</strong><small>giorni di superamento dell’obiettivo ozono nel 2025</small></div>
+  </div>
+
+  <section class="section">
+    <div class="section-head"><h2>Medie annuali degli inquinanti</h2><p>Valori in µg/m³</p></div>
+    <div class="legend"><span><i class="dot dark"></i>stazione traffico urbano</span><span><i class="dot light"></i>stazione fondo urbano</span></div>
+    <div class="grid">
+      <article class="card hoverable" data-tip="PM10: confronto tra stazione traffico urbano di viale Timavo e stazione fondo urbano di San Lazzaro.">
+        <div class="card-head"><div><div class="card-title">PM10</div><span class="badge good">trend in diminuzione</span></div><div class="card-meta">2006 → 2025</div></div>
+        <svg class="chart" id="pm10Chart" viewBox="0 0 620 235"></svg>
+        <div class="station">Timavo: 52 → 28 · San Lazzaro: 32 → 23</div>
+      </article>
+      <article class="card hoverable" data-tip="Biossido di azoto: confronto tra stazione traffico urbano di viale Timavo e fondo urbano di San Lazzaro.">
+        <div class="card-head"><div><div class="card-title">Biossido di azoto (NO₂)</div><span class="badge good">riduzione marcata</span></div><div class="card-meta">2006 → 2025</div></div>
+        <svg class="chart" id="no2Chart" viewBox="0 0 620 235"></svg>
+        <div class="station">Timavo: 48 → 26 · San Lazzaro: 47 → 17</div>
+      </article>
+      <article class="card full hoverable" data-tip="PM2.5 rilevato nella stazione di fondo urbano di San Lazzaro.">
+        <div class="card-head"><div><div class="card-title">PM2.5 — fondo urbano</div><span class="badge good">valore 2025: 16 µg/m³</span></div><div class="card-meta">San Lazzaro</div></div>
+        <svg class="chart" id="pm25Chart" viewBox="0 0 1260 235"></svg>
+        <div class="insight"><i></i><span>Il valore scende da 22 a 16 µg/m³, con oscillazioni contenute e un quadro complessivamente più favorevole rispetto all’inizio della serie.</span></div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><h2>Giorni di superamento dei limiti o obiettivi</h2><p>Numero di giorni/anno</p></div>
+    <div class="legend"><span><i class="dot dark"></i>andamento annuale</span><span><i class="dot limit"></i>limite/obiettivo</span></div>
+    <div class="grid">
+      <article class="card hoverable" data-tip="PM10 nella stazione di traffico urbano di viale Timavo; limite: 35 giorni.">
+        <div class="card-head"><div><div class="card-title">PM10 — traffico urbano</div><span class="badge warn">limite 35 giorni</span></div><div class="card-meta">viale Timavo</div></div>
+        <svg class="chart" id="exTimavo" viewBox="0 0 620 235"></svg>
+      </article>
+      <article class="card hoverable" data-tip="PM10 nella stazione di fondo urbano di San Lazzaro; limite: 35 giorni.">
+        <div class="card-head"><div><div class="card-title">PM10 — fondo urbano</div><span class="badge good">2025 sotto il limite</span></div><div class="card-meta">San Lazzaro</div></div>
+        <svg class="chart" id="exSanLazzaro" viewBox="0 0 620 235"></svg>
+      </article>
+      <article class="card full hoverable" data-tip="Ozono nella stazione di fondo urbano di San Lazzaro; obiettivo: 25 giorni.">
+        <div class="card-head"><div><div class="card-title">Ozono (O₃) — fondo urbano</div><span class="badge warn">obiettivo 25 giorni</span></div><div class="card-meta">San Lazzaro</div></div>
+        <svg class="chart" id="ozoneChart" viewBox="0 0 1260 235"></svg>
+        <div class="insight"><i></i><span>L’ozono resta il parametro più critico: nel 2025 i giorni di superamento dell’obiettivo sono 63, ancora nettamente sopra la soglia di riferimento.</span></div>
+      </article>
+    </div>
+  </section>
+</div>
+<div class="footer-note">Ricostruzione interattiva per GitBook su dati 2006–2025.</div>
+</main>
+<div class="tooltip" id="tooltip"></div>
+<div class="viz-modal" hidden><section class="viz-dialog"><button class="viz-close" data-viz-action="close">×</button><h2>Come leggere la visualizzazione</h2><p>I grafici separano medie annuali e giorni di superamento. Le linee dorate indicano limiti o obiettivi di riferimento.</p></section></div>
+<script>
+const years=Array.from({length:20},(_,i)=>2006+i);
+const data={
+ pm25:[22,21,22,25,23,19,17,21,19,23,20,18,19,17,18,15,16,16,16,16],
+ pm10t:[52,49,46,42,38,41,41,35,33,37,33,40,35,32,32,33,35,30,30,28],
+ pm10f:[32,37,33,33,32,35,34,27,24,29,28,33,28,27,27,26,29,24,24,23],
+ no2t:[48,47,44,44,46,51,43,37,34,40,39,42,35,34,29,33,32,29,26,26],
+ no2f:[47,41,38,36,33,32,29,24,22,23,23,25,22,23,18,21,20,18,16,17],
+ exT:[146,139,110,80,84,86,93,56,50,67,42,83,56,53,61,51,64,32,34,32],
+ exF:[35,77,55,47,53,64,60,26,22,32,27,67,28,32,39,32,28,15,21,13],
+ ozone:[47,83,59,54,51,89,69,62,23,60,50,62,55,55,42,54,55,62,55,63]
+};
+const NS='http://www.w3.org/2000/svg';
+function lineChart(id,series,max,limit=null,wide=false){
+ const svg=document.getElementById(id), W=wide?1260:620,H=235,ml=38,mr=18,mt=16,mb=32,iw=W-ml-mr,ih=H-mt-mb;
+ const x=i=>ml+i*(iw/(years.length-1)),y=v=>mt+ih-(v/max)*ih;
+ [0,.25,.5,.75,1].forEach(f=>{const yy=mt+ih-ih*f,l=document.createElementNS(NS,'line');l.setAttribute('x1',ml);l.setAttribute('x2',W-mr);l.setAttribute('y1',yy);l.setAttribute('y2',yy);l.setAttribute('class','gridline');svg.appendChild(l);const t=document.createElementNS(NS,'text');t.setAttribute('x',2);t.setAttribute('y',yy+4);t.setAttribute('class','axis-label');t.textContent=Math.round(max*f);svg.appendChild(t)});
+ [0,4,8,12,16,19].forEach(i=>{const t=document.createElementNS(NS,'text');t.setAttribute('x',x(i));t.setAttribute('y',H-8);t.setAttribute('text-anchor','middle');t.setAttribute('class','axis-label');t.textContent=years[i];svg.appendChild(t)});
+ if(limit!==null){const ly=y(limit),l=document.createElementNS(NS,'line');l.setAttribute('x1',ml);l.setAttribute('x2',W-mr);l.setAttribute('y1',ly);l.setAttribute('y2',ly);l.setAttribute('class','limit');svg.appendChild(l);const tx=document.createElementNS(NS,'text');tx.setAttribute('x',W-mr-4);tx.setAttribute('y',ly-6);tx.setAttribute('text-anchor','end');tx.setAttribute('class','value');tx.textContent='limite '+limit;svg.appendChild(tx)}
+ series.forEach((s,si)=>{const pts=s.values.map((v,i)=>`${x(i)},${y(v)}`).join(' ');const p=document.createElementNS(NS,'polyline');p.setAttribute('points',pts);p.setAttribute('class',si===0?'line-dark':'line-light');svg.appendChild(p);s.values.forEach((v,i)=>{if(i%2===0||i===19){const c=document.createElementNS(NS,'circle');c.setAttribute('cx',x(i));c.setAttribute('cy',y(v));c.setAttribute('r',3.6);c.setAttribute('fill',si===0?'#432777':'#a28fbe');c.setAttribute('class','point');svg.appendChild(c)}})});
+}
+lineChart('pm10Chart',[{values:data.pm10t},{values:data.pm10f}],60);
+lineChart('no2Chart',[{values:data.no2t},{values:data.no2f}],60);
+lineChart('pm25Chart',[{values:data.pm25}],30,null,true);
+lineChart('exTimavo',[{values:data.exT}],150,35);
+lineChart('exSanLazzaro',[{values:data.exF}],90,35);
+lineChart('ozoneChart',[{values:data.ozone}],100,25,true);
+const tip=document.getElementById('tooltip');document.addEventListener('pointermove',e=>{const t=e.target.closest('[data-tip]');if(!t){tip.style.opacity=0;return}tip.textContent=t.dataset.tip;tip.style.opacity=1;tip.style.left=Math.min(e.clientX+14,innerWidth-tip.offsetWidth-12)+'px';tip.style.top=Math.min(e.clientY+14,innerHeight-tip.offsetHeight-12)+'px'});document.addEventListener('pointerleave',()=>tip.style.opacity=0);
+(function(){const root=document.getElementById('visual'),modal=document.querySelector('.viz-modal');const close=()=>{modal.hidden=true;document.body.style.overflow=''};document.addEventListener('click',async e=>{const b=e.target.closest('[data-viz-action]');if(!b)return;const a=b.dataset.vizAction;if(a==='replay')location.reload();if(a==='pause'){root.classList.toggle('viz-paused');const l=b.querySelector('.viz-label');if(l)l.textContent=root.classList.contains('viz-paused')?'Riprendi':'Pausa'}if(a==='fullscreen'){try{if(!document.fullscreenElement){await root.requestFullscreen();root.classList.add('viz-fullscreen')}else await document.exitFullscreen()}catch(_){root.classList.toggle('viz-fullscreen')}}if(a==='print')window.print();if(a==='info'){modal.hidden=false;document.body.style.overflow='hidden'}if(a==='close')close()});document.addEventListener('fullscreenchange',()=>{if(!document.fullscreenElement)root.classList.remove('viz-fullscreen')});})();
+function postHeight(){parent.postMessage({type:'gitbook-embed-height',height:document.documentElement.scrollHeight},'*')}new ResizeObserver(postHeight).observe(document.body);addEventListener('load',postHeight);
+</script>
+</body>
+</html>
